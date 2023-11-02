@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/navbar_border"
+        app:menu="@menu/bottom_navbar"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
+        tools:ignore="match_parent">
+
+        <TextView
+            android:id="@+id/quote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/quote"
+            android:fontFamily="@font/inter"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+
+            android:text="@string/author"
+            android:fontFamily="@font/inter"
+            android:textAlignment="textEnd"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/monday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/thursday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/friday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/saturday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/sunday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!--TODO connect to actual days -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/monMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/neutral_mood_icon" />
+
+                <TextView
+                    android:id="@+id/monDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/tuesMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/best_mood_icon" />
+
+                <TextView
+                    android:id="@+id/tuesDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/wedMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/wedDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="20"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/thuMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/thuDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="21"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/friMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/friDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="22"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/satMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/satDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="23"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/sunMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/sunDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="24"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="350dp"
+            android:layout_height="2dp"
+            android:layout_marginBottom="50dp"
+            android:background="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Today I'm Feeling..."
+            android:textAlignment="center"
+            android:fontFamily="@font/inter"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/rounded_border"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="50dp">
+
+            <ImageView
+                android:id="@+id/worseMood"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/worst_mood_icon" />
+
+            <ImageView
+                android:id="@+id/badMood"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/bad_mood_icon" />
+
+            <ImageView
+                android:id="@+id/neutralMood"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/neutral_mood_icon" />
+
+            <ImageView
+                android:id="@+id/goodMood"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/good_mood_icon" />
+
+            <ImageView
+                android:id="@+id/bestMood"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/best_mood_icon" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Daily Reflection"
+            android:textAlignment="center"
+            android:fontFamily="@font/inter"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_border"
+            android:layout_marginBottom="100dp" >
+
+            <Button
+                android:id="@+id/submitEntryButton"
+                android:layout_width="180dp"
+                android:layout_height="35dp"
+                android:background="@drawable/filled_rounded_border"
+                android:text="Start Writing"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/inter"
+            android:text="@string/tuesday"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/inter"
+            android:text="@string/wednesday"
+            android:textAlignment="center"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#292828"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profilePivIv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circular"
+            app:srcCompat="@drawable/temp_pfp" />
+
+        <TextView
+            android:id="@+id/fullnameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Francesca Antonio"
+            android:textColor="#d9d9d9"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePivIv" />
+
+        <TextView
+            android:id="@+id/emailTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/inter"
+            android:text="lucina_antonio@dlsu.edu.ph"
+            android:textColor="#d9d9d9"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullnameTv" />
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileContianerSIv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#d9d9d9"
+            app:shapeAppearanceOverlay="@style/rounded_corners"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"></com.google.android.material.imageview.ShapeableImageView>
+
+        <TextView
+            android:id="@+id/numJournalEntriesTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="100"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="@+id/textView9"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/longestStreakTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="20"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="@+id/textView11"
+            app:layout_constraintStart_toStartOf="@+id/textView11"
+            app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="Journal Entries"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView11"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
+            app:layout_constraintVertical_bias="0.115" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="35dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="Longest Streak"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
+            app:layout_constraintVertical_bias="0.115" />
+
+        <TextView
+            android:id="@+id/myStatisticsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="108dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="My Statistics"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView11"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toTopOf="@+id/profileContianerSIv" />
+
+        <TextView
+            android:id="@+id/lastSevenDaysTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="Last 7 Days"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/myStatisticsTv"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/myStatisticsTv"
+            app:layout_constraintTop_toBottomOf="@+id/myStatisticsTv" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="32dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="120dp"
+            android:scaleType="fitStart"
+            app:layout_constraintEnd_toEndOf="@+id/myStatisticsTv"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/lastSevenDaysTv"
+            app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
+            app:srcCompat="@drawable/dropdown" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/tempSpaceCl"
+            android:layout_width="0dp"
+            android:layout_height="260dp"
+            android:layout_marginTop="28dp"
+            android:padding="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/profileContianerSIv"
+            app:layout_constraintEnd_toEndOf="@+id/textView11"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/lastSevenDaysTv"
+            app:layout_constraintVertical_bias="0.011"
+            app:strokeColor="#292929"
+            app:strokeWidth="1dp"></com.google.android.material.imageview.ShapeableImageView>
+
+        <ImageView
+            android:id="@+id/cancelButton"
+            android:layout_width="40dp"
+            android:layout_height="42dp"
+
+
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/baseline_cancel_24"
+            app:layout_constraintBottom_toBottomOf="@+id/profileContianerSIv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
