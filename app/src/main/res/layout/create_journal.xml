@@ -47,7 +47,7 @@
 
 
             <EditText
-                android:id="@+id/title"
+                android:id="@+id/titleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -80,7 +80,7 @@
 
             <!-- TODO place in scroll view -->
             <EditText
-                android:id="@+id/content"
+                android:id="@+id/bodyTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"

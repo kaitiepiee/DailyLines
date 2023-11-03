@@ -18,12 +18,13 @@
         app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="#B6B6B6"
+        app:strokeColor="@color/teal"
         app:strokeWidth="1dp"></com.google.android.material.imageview.ShapeableImageView>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/purple"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/entryContainerSIv"

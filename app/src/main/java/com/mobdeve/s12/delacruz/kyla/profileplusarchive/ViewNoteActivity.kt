@@ -28,8 +28,8 @@ class ViewNoteActivity : AppCompatActivity() {
 //        viewBinding.saveBt.isEnabled = false
 
         // gets the title and body objects from the detail view
-        val detailTitle = viewBinding.titleEtv
-        val detailBody = viewBinding.bodyEtv
+        val detailTitle = viewBinding.titleTv
+        val detailBody = viewBinding.bodyTv
 
         // get the values passed by intent that correspond to title, body, and position and set title in the detail view
         val titleData = intent.getStringExtra(titleKey)
