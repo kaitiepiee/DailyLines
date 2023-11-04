@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229268762206",
+    "project_id": "mobdeve-s12-dailylines-ba62a",
+    "storage_bucket": "mobdeve-s12-dailylines-ba62a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229268762206:android:bff7c9367a98cbce360ecf",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s12.delacruz.kyla.profileplusarchive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCOlnxOeDCKiGeG6WhIF_N3cvqyxSmQN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
