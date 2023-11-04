@@ -23,27 +23,36 @@
         android:orientation="vertical"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
         tools:ignore="match_parent">
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_horizontal"
+            android:text="Daily Lines"
+            android:layout_marginBottom="10dp"
+            android:textSize="28sp" />
+
 
         <TextView
             android:id="@+id/quote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:text="@string/quote"
             android:fontFamily="@font/inter"
-            android:textSize="18sp"/>
+            android:text="@string/quote"
+            android:layout_margin="10dp"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-
-            android:text="@string/author"
             android:fontFamily="@font/inter"
+            android:text="@string/author"
             android:textAlignment="textEnd"
             android:textSize="15sp" />
 
@@ -360,7 +369,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="123dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="100dp"
             android:background="@drawable/rounded_border"

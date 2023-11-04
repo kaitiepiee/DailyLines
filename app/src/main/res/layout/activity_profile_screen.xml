@@ -15,11 +15,22 @@
         android:gravity="center|top"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_horizontal"
+            android:text="Profile"
+            android:textColor="#FDFCFC"
+            android:textSize="20sp" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profilePivIv"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +42,7 @@
             android:id="@+id/fullnameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_bold"
             android:text="Francesca Antonio"
             android:textColor="#d9d9d9"
@@ -45,7 +56,6 @@
             android:id="@+id/emailTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:fontFamily="@font/inter"
             android:text="lucina_antonio@dlsu.edu.ph"
             android:textColor="#d9d9d9"

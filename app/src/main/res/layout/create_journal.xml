@@ -15,22 +15,30 @@
         tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="346dp">
 
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="Today's Journal"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/dayCreated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-
             android:fontFamily="@font/inter"
             android:text="Monday"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/dateCreated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:fontFamily="@font/inter"
             android:text="October 20, 2023"
             android:textSize="15sp"
