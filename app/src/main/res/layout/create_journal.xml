@@ -114,6 +114,7 @@
                     android:background="@drawable/gallery_icon" />
 
                 <Button
+                    android:id="@+id/submitButton"
                     android:layout_width="150dp"
                     android:layout_height="35dp"
 
