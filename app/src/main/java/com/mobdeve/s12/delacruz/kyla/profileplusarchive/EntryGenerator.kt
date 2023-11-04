@@ -61,6 +61,239 @@ class EntryGenerator {
                         "2023-10-15"
                     )
             )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-20"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-21"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-21"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-4"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-4"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-5"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-6"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-7"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-8"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-9"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-10"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-11"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-12"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kait",
+                    "Hello there",
+                    "This is dummy data. I can't think of other things to say",
+                    "2023-11-13"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-14"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-15"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-17"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-17"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-17"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-18"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-19"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-20"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-21"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-22"
+                )
+            )
+            entryList.add(
+                    EntryModel(
+                        "kyla",
+                        "HAHAHHAAH very funny",
+                        "I can't think of other things to say",
+                        "2023-11-23"
+                    )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-24"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-25"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-26"
+                )
+            )
+            entryList.add(
+                EntryModel(
+                    "kyla",
+                    "HAHAHHAAH very funny",
+                    "I can't think of other things to say",
+                    "2023-11-27"
+                )
+            )
+
 
 
             return entryList
