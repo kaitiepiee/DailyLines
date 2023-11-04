@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CalendarView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -102,6 +103,11 @@ class MainActivity : AppCompatActivity() {
             myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
             recyclerView.adapter = myAdapter
             recyclerView.layoutManager = LinearLayoutManager(this)
+        }
+        val exitButton = findViewById<ImageView>(R.id.cancelButton)
+        exitButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }
