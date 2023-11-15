@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#262727">
+
+    <TextView
+        android:id="@+id/splashText"
+        android:layout_width="177dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/inter_bold"
+        android:gravity="center"
+        android:lineSpacingExtra="-10sp"
+        android:text="@string/splash_text"
+        android:textColor="#ffffff"
+        android:textSize="48sp" />
+
+</RelativeLayout>
