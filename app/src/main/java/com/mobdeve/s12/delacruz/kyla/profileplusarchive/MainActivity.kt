@@ -1,15 +1,15 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
-import MyViewHolder
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -18,13 +18,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.LocalDate
+import java.util.Random
 
-class MainActivity : AppCompatActivity() {
+
+
+class MainActivity : AppCompatActivity(){
     private lateinit var entryList: ArrayList<EntryModel>
     private lateinit var myAdapter: MyAdapter
     private lateinit var viewBinding: ActivityArchivesBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var calendarView: CalendarView
+    private lateinit var quoteTextView: TextView
+    private lateinit var authorTextView: TextView
 
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -45,6 +50,11 @@ class MainActivity : AppCompatActivity() {
 
         // Set the content view to the home_screen layout
         setContentView(R.layout.home_screen)
+
+        // For quotes API
+        quoteTextView = findViewById(R.id.quote)
+        authorTextView = findViewById(R.id.author)
+        RequestManager(this@MainActivity).getAllQuotes(listener)
 
         // Create an Intent to navigate to the create_journal.xml layout
         val submitEntryButton = findViewById<Button>(R.id.submitEntryButton)
@@ -75,9 +85,8 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
     }
-
-
     private fun setupArchives() {
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
@@ -110,4 +119,41 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    // for Quotes API
+    private val listener: QuotesResponseListener = object : QuotesResponseListener {
+        override fun didFetch(response: List<QuotesResponse>?, message: String, message1: String) {
+            runOnUiThread {
+                if (!response.isNullOrEmpty()) {
+                    // randomize quote from API list
+                    val random = Random()
+                    val randomQuoteIndex = random.nextInt(response.size)
+                    val randomQuote = response[randomQuoteIndex]
+
+                    val quoteText = randomQuote.text
+                    val authorText = randomQuote.author
+
+                    // Add "-" at the beginning of the author
+                    val formattedAuthor = "- $authorText"
+
+                    // Remove ", type.fit" from the author if it exists
+                    val cleanedAuthor = formattedAuthor.replace(", type.fit", "")
+
+                    Log.d("QuoteDebug", "Quote Text: $quoteText, Author: $authorText")
+                    quoteTextView.text = quoteText
+                    authorTextView.text = cleanedAuthor
+                }
+                else {
+                    Log.d("QuoteDebug", "No quotes found")
+                    quoteTextView.text = "No quotes found"
+                    authorTextView.text = ""
+                }
+            }
+        }
+
+        override fun didError(message: String) {
+            Log.e("QuoteError", message)
+        }
+    }
 }
+

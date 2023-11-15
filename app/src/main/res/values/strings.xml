@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">DailyLines</string>
 
-    <!-- quote of the day -->
-    <string name="quote">“Do what you can, with what you have, where you are.”</string>
-    <string name="author">―Theodore Roosevelt</string>
+
 
     <!-- days of the week -->
     <string name="monday">Mon</string>
