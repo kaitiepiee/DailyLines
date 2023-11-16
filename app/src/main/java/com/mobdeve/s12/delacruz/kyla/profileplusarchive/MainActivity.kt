@@ -6,10 +6,14 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.CalendarView
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -55,6 +59,42 @@ class MainActivity : AppCompatActivity(){
         quoteTextView = findViewById(R.id.quote)
         authorTextView = findViewById(R.id.author)
         RequestManager(this@MainActivity).getAllQuotes(listener)
+
+        // For mood buttons
+        fun onMoodButtonClick(view: View) {
+            val moodTag = view.tag.toString()
+
+            val parentLayout = view.parent as LinearLayout
+            for (i in 0 until parentLayout.childCount) {
+                val childView = parentLayout.getChildAt(i)
+                if (childView is ImageButton && childView != view) {
+                    childView.isSelected = false
+                    // Restore the original background of the button when not selected
+                    childView.setBackgroundResource(android.R.color.transparent)
+                }
+            }
+
+            view.isSelected = !view.isSelected
+            if (view.isSelected) {
+                view.setBackgroundResource(R.drawable.glow_background)
+                Toast.makeText(this, "Selected mood: $moodTag", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                view.setBackgroundResource(android.R.color.transparent)
+                Toast.makeText(this, "Deselected mood: $moodTag", Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        val worseMoodButton: ImageButton = findViewById(R.id.worseMood)
+        worseMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        val badMoodButton: ImageButton = findViewById(R.id.badMood)
+        badMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        val neutralMoodButton: ImageButton = findViewById(R.id.neutralMood)
+        neutralMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        val goodMoodButton: ImageButton = findViewById(R.id.goodMood)
+        goodMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        val bestMoodButton: ImageButton = findViewById(R.id.bestMood)
+        bestMoodButton.setOnClickListener { onMoodButtonClick(it) }
 
         // Create an Intent to navigate to the create_journal.xml layout
         val submitEntryButton = findViewById<Button>(R.id.submitEntryButton)
@@ -133,6 +173,8 @@ class MainActivity : AppCompatActivity(){
                     val quoteText = randomQuote.text
                     val authorText = randomQuote.author
 
+                    // Add """" at the beginning and end of quote
+                    val formattedQuote = "\"$quoteText\""
                     // Add "-" at the beginning of the author
                     val formattedAuthor = "- $authorText"
 
@@ -140,7 +182,7 @@ class MainActivity : AppCompatActivity(){
                     val cleanedAuthor = formattedAuthor.replace(", type.fit", "")
 
                     Log.d("QuoteDebug", "Quote Text: $quoteText, Author: $authorText")
-                    quoteTextView.text = quoteText
+                    quoteTextView.text = formattedQuote
                     authorTextView.text = cleanedAuthor
                 }
                 else {

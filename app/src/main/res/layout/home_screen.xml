@@ -23,7 +23,7 @@
         android:orientation="vertical"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
         tools:ignore="match_parent">
 
@@ -315,45 +315,65 @@
             android:paddingBottom="10dp"
             android:layout_marginBottom="50dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/worseMood"
-                android:layout_width="40dp"
+                android:layout_width="29dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/worst_mood_icon" />
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/worst_mood_icon"
+                android:tag="worst_mood" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/badMood"
-                android:layout_width="40dp"
+                android:layout_width="26dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/bad_mood_icon" />
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bad_mood_icon"
+                android:tag="bad_mood" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/neutralMood"
-                android:layout_width="40dp"
+                android:layout_width="29dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/neutral_mood_icon" />
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/neutral_mood_icon"
+                android:tag="neutral_mood" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/goodMood"
-                android:layout_width="40dp"
+                android:layout_width="28dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/good_mood_icon" />
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/good_mood_icon"
+                android:tag="good_mood" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/bestMood"
-                android:layout_width="40dp"
+                android:layout_width="29dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/best_mood_icon" />
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/best_mood_icon"
+                android:tag="best_mood" />
         </LinearLayout>
 
         <TextView
