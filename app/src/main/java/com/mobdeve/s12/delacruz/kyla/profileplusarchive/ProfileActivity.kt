@@ -3,9 +3,11 @@ package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,5 +32,22 @@ class ProfileActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        // Sign Out Button
+        val signOutButton: Button = findViewById(R.id.signOutButton)
+        signOutButton.setOnClickListener {
+            signOut()
+        }
     }
+    fun onSignOutButtonClick(view: View) {
+        signOut()
+    }
+
+    private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 }

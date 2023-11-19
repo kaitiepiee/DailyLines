@@ -12,7 +12,9 @@ class SplashActivity : AppCompatActivity(){
         val splashDuration = 2000 // 2 seconds
         Handler().postDelayed({
             // Start the main activity after the splash duration
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+
+            // if u want to by pass the login, change LoginActivity to MainActivity
+            val intent = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }, splashDuration.toLong())
