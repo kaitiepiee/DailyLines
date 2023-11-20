@@ -5,21 +5,29 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileActivity : AppCompatActivity() {
+
+    var isDarkMode = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile_screen)
 
-//        val editProfileButton = findViewById<Button>(R.id.editProfileButton)
-//
-//        editProfileButton.setOnClickListener {
-//            val intent = Intent(this, EditProfileActivity::class.java)
-//            startActivity(intent)
-//        }
+        // light mode
+        if (!isDarkMode) {
+            setContentView(R.layout.activity_profile_screen)
+        }
+        // dark mode
+        else {
+            setContentView(R.layout.dark_profile_screen)
+        }
 
         // Show total number of entries
         val entryListSize = intent.getIntExtra("entryListSize", 0)
@@ -33,14 +41,45 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Sign Out Button
-        val signOutButton: Button = findViewById(R.id.signOutButton)
-        signOutButton.setOnClickListener {
-            signOut()
+        // Settings Button
+        val settingsButton: ImageButton = findViewById(R.id.settingsButton)
+        settingsButton.setOnClickListener {
+            showSettings(it)
         }
+
     }
-    fun onSignOutButtonClick(view: View) {
-        signOut()
+
+    private fun showSettings(view: View) {
+        val popup = PopupMenu(this, view)
+        popup.menuInflater.inflate(R.menu.settings_menu, popup.menu)
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.settings_mode -> {
+                    if (isDarkMode) {
+                        isDarkMode = !isDarkMode
+                    } else {
+                        isDarkMode = !isDarkMode
+                    }
+                    true
+                }
+
+                R.id.settings_edit -> {
+//                    val intent = Intent(this, EditProfileActivity::class.java)
+//                    startActivity(intent)
+                    true
+                }
+
+                R.id.settings_logout -> {
+                    signOut()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        popup.show()
     }
 
     private fun signOut() {
@@ -49,5 +88,4 @@ class ProfileActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
 }
