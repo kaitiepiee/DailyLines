@@ -43,6 +43,8 @@ class ViewNoteActivity : AppCompatActivity() {
         bodyString = bodyData.toString()
 
 
+
+
 //        //check if title was edited
 //        viewBinding.titleEtv.addTextChangedListener(object : TextWatcher {
 //            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
