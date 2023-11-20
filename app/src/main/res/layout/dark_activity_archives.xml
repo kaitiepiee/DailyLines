@@ -19,7 +19,7 @@
         android:textSize="20sp" />
 
 
-    // TODO: change calendar view text colors to white
+<!--     TODO: change calendar view text colors to white-->
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
