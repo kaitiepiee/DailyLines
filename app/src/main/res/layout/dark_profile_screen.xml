@@ -7,7 +7,7 @@
     android:id="@+id/userContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal"
+    android:background="@color/darker_black"
     android:orientation="vertical">
 
     <ImageButton
@@ -32,7 +32,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_horizontal"
             android:text="Profile"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -54,7 +54,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_bold"
             android:text="Francesca Antonio"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"
             android:text="lucina_antonio@dlsu.edu.ph"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
             android:id="@+id/profileContianerSIv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/black"
             app:shapeAppearanceOverlay="@style/rounded_corners"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp"></com.google.android.material.imageview.ShapeableImageView>
@@ -98,6 +98,7 @@
             android:gravity="center"
             android:text="100"
             android:textSize="20sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/textView9"
             app:layout_constraintEnd_toEndOf="@+id/textView9"
             app:layout_constraintStart_toStartOf="@+id/textView9"
@@ -112,6 +113,7 @@
             android:gravity="center"
             android:text="20"
             android:textSize="20sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/textView11"
             app:layout_constraintEnd_toEndOf="@+id/textView11"
             app:layout_constraintStart_toStartOf="@+id/textView11"
@@ -127,6 +129,7 @@
             android:gravity="center"
             android:text="Journal Entries"
             android:textSize="12sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView11"
             app:layout_constraintHorizontal_bias="0.0"
@@ -143,6 +146,7 @@
             android:gravity="center"
             android:text="Longest Streak"
             android:textSize="12sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
@@ -157,6 +161,7 @@
             android:gravity="center"
             android:text="My Statistics"
             android:textSize="12sp"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/textView11"
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toTopOf="@+id/profileContianerSIv" />
@@ -170,6 +175,7 @@
             android:gravity="center"
             android:text="Last 7 Days"
             android:textSize="8sp"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/myStatisticsTv"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/myStatisticsTv"
@@ -198,7 +204,7 @@
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/lastSevenDaysTv"
             app:layout_constraintVertical_bias="0.011"
-            app:strokeColor="#292929"
+            app:strokeColor="@color/white"
             app:strokeWidth="1dp"></com.google.android.material.imageview.ShapeableImageView>
 
         <ImageView
