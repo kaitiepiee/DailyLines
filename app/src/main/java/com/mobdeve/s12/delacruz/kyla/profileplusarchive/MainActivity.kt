@@ -25,6 +25,8 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Random
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 
@@ -36,6 +38,8 @@ class MainActivity : AppCompatActivity(){
     private lateinit var calendarView: CalendarView
     private lateinit var quoteTextView: TextView
     private lateinit var authorTextView: TextView
+    private lateinit var appTitleTextView: TextView
+    private lateinit var auth: FirebaseAuth
 
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -55,6 +59,22 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         AppPreferences.applyDarkModeLogic(this, R.layout.home_screen, R.layout.dark_home_screen)
 
+        // After initializing views and Firebase Authentication
+        appTitleTextView = findViewById(R.id.appTitle)
+        auth = FirebaseAuth.getInstance()
+
+// Check if the user is signed in
+        val currentUser: FirebaseUser? = auth.currentUser
+
+        if (currentUser != null) {
+            // User is signed in, update the welcome message
+            val displayName = currentUser.displayName
+            val welcomeMessage = "Welcome back, $displayName!"
+            appTitleTextView.text = welcomeMessage
+        } else {
+            // User is not signed in, show a default message or handle accordingly
+            appTitleTextView.text = "Daily Lines"
+        }
         // For quotes API
         quoteTextView = findViewById(R.id.quote)
         authorTextView = findViewById(R.id.author)
