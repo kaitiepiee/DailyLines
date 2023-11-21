@@ -1,5 +1,6 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -141,6 +141,8 @@ class MainActivity : AppCompatActivity(){
                 }
                 R.id.nav_archive -> {
                     // Handle the home screen behavior
+                    // Get all entries of current user and adds them to this.entryList the call setUpArchives
+                    getAllEntriesOfCurrentUser(current_user)
                     setupArchives()
                 }
             }
@@ -151,29 +153,35 @@ class MainActivity : AppCompatActivity(){
 
 
     // Gets entries under the users name from DB
-    private fun getAllEntriesOfCurrentUser(currentUser : String){
-        db.collection(COLLECTION_ENTRIES)
-            .whereEqualTo(FIELD_USER_ID, currentUser)
-            .get()
-            .addOnSuccessListener { documents ->
-                for(document in documents){
-                    var entryTitle = document.get(FIELD_ENT_TITLE).toString()
-                    var entryBody = document.get(FIELD_ENT_BODY).toString()
-                    var entryDate = document.get(FIELD_DATE).toString()
-                    var entryImage = document.get(FIELD_ENT_IMG).toString()
-                    this.entryList.add(
-                        EntryModel(
-                            entryTitle,
-                            entryBody,
-                            entryDate,
-                            entryImage
-                        )
-                    )
-                }
+    private fun getAllEntriesOfCurrentUser(currentUser : String, entryList: ArrayList<EntryModel> = this.entryList){
+        class DBThread() : Runnable {
+            override fun run() {
+                db.collection(COLLECTION_ENTRIES)
+                    .whereEqualTo(FIELD_USER_ID, currentUser)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for(document in documents){
+                            var entryTitle = document.get(FIELD_ENT_TITLE).toString()
+                            var entryBody = document.get(FIELD_ENT_BODY).toString()
+                            var entryDate = document.get(FIELD_DATE).toString()
+                            var entryImage = document.get(FIELD_ENT_IMG).toString()
+                            entryList.add(
+                                EntryModel(
+                                    entryTitle,
+                                    entryBody,
+                                    entryDate,
+                                    entryImage
+                                )
+                            )
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d(TAG, "Error getting documents: $exception")
+                    }
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this,"Error getting documents: $exception",Toast.LENGTH_LONG).show()
-            }
+        }
+        val runnable = DBThread()
+        Thread(runnable).start()
     }
 
 
@@ -182,9 +190,6 @@ class MainActivity : AppCompatActivity(){
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
 
-
-        // Get all entries of current user and adds them to this.entryList
-        getAllEntriesOfCurrentUser(current_user)
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
 
