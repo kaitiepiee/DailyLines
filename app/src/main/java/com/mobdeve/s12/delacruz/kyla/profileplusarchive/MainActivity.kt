@@ -60,32 +60,6 @@ class MainActivity : AppCompatActivity(){
         authorTextView = findViewById(R.id.author)
         RequestManager(this@MainActivity).getAllQuotes(listener)
 
-        // For mood buttons
-        fun onMoodButtonClick(view: View) {
-            val moodTag = view.tag.toString()
-
-            val parentLayout = view.parent as LinearLayout
-            for (i in 0 until parentLayout.childCount) {
-                val childView = parentLayout.getChildAt(i)
-                if (childView is ImageButton && childView != view) {
-                    childView.isSelected = false
-                    // Restore the original background of the button when not selected
-                    childView.setBackgroundResource(android.R.color.transparent)
-                }
-            }
-
-            view.isSelected = !view.isSelected
-            if (view.isSelected) {
-                view.setBackgroundResource(R.drawable.glow_background)
-                Toast.makeText(this, "Selected mood: $moodTag", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                view.setBackgroundResource(android.R.color.transparent)
-                Toast.makeText(this, "Deselected mood: $moodTag", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-
         // TODO: input moods
         // Days of the Week
         val currentDate = LocalDate.now()
@@ -111,6 +85,32 @@ class MainActivity : AppCompatActivity(){
         satDayTextView.text = dayNumbersOfWeek[5]
         val sunDayTextView: TextView = findViewById(R.id.sunDay)
         sunDayTextView.text = dayNumbersOfWeek[6]
+
+        // For mood buttons
+        fun onMoodButtonClick(view: View) {
+            val moodTag = view.tag.toString()
+
+            val parentLayout = view.parent as LinearLayout
+            for (i in 0 until parentLayout.childCount) {
+                val childView = parentLayout.getChildAt(i)
+                if (childView is ImageButton && childView != view) {
+                    childView.isSelected = false
+                    // Restore the original background of the button when not selected
+                    childView.setBackgroundResource(android.R.color.transparent)
+                }
+            }
+
+            view.isSelected = !view.isSelected
+            if (view.isSelected) {
+                view.setBackgroundResource(R.drawable.glow_background)
+                Toast.makeText(this, "Selected mood: $moodTag", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                view.setBackgroundResource(android.R.color.transparent)
+                Toast.makeText(this, "Deselected mood: $moodTag", Toast.LENGTH_SHORT).show()
+
+            }
+        }
 
         val worseMoodButton: ImageButton = findViewById(R.id.worseMood)
         worseMoodButton.setOnClickListener { onMoodButtonClick(it) }

@@ -62,8 +62,8 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 R.id.settings_edit -> {
-//                    val intent = Intent(this, EditProfileActivity::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this, EditProfileActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
