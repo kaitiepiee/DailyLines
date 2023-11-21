@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--    <stroke android:width="2dp" android:color="@color/black"/>-->
+<!--    <solid android:color="@color/yellow" />-->
+<!--</shape>-->
+
+<!-- res/drawable/button_with_top_stroke.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/darker_black" />
+        </shape>
+    </item>
+    <item android:top="2dp" >
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+</layer-list>
