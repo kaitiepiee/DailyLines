@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ArchiveEntryLayoutBinding
 
+
 class MyAdapter(private val entryList: List<EntryModel>, private val viewNoteLauncher: ActivityResultLauncher<Intent>) : Adapter<MyViewHolder>() {
     companion object {
         const val titleKey : String = "TITLE_KEY"
@@ -38,7 +39,4 @@ class MyAdapter(private val entryList: List<EntryModel>, private val viewNoteLau
     override fun getItemCount(): Int {
         return entryList.size
     }
-
-
-
 }

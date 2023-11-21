@@ -53,9 +53,7 @@ class MainActivity : AppCompatActivity(){
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Set the content view to the home_screen layout
-        setContentView(R.layout.home_screen)
+        AppPreferences.applyDarkModeLogic(this, R.layout.home_screen, R.layout.dark_home_screen)
 
         // For quotes API
         quoteTextView = findViewById(R.id.quote)
@@ -160,6 +158,7 @@ class MainActivity : AppCompatActivity(){
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
+
         this.entryList = EntryGenerator.generateData()
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView

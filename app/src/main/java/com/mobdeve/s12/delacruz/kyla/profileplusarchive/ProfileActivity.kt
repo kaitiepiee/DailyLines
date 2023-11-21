@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.Switch
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.imageview.ShapeableImageView
@@ -16,17 +17,16 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ProfileActivity : AppCompatActivity() {
 
-    var isDarkMode = false;
+    private lateinit var appPreferences: AppPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+// App Preferences for Dark/Normal Mode
+        appPreferences = AppPreferences(this)
 
-        // light mode
-        if (!isDarkMode) {
-            setContentView(R.layout.activity_profile_screen)
-        }
-        // dark mode
-        else {
+        if (appPreferences.isDarkModeEnabled) {
             setContentView(R.layout.dark_profile_screen)
+        } else {
+            setContentView(R.layout.activity_profile_screen)
         }
 
         // Show total number of entries
@@ -56,11 +56,8 @@ class ProfileActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.settings_mode -> {
-                    if (isDarkMode) {
-                        isDarkMode = !isDarkMode
-                    } else {
-                        isDarkMode = !isDarkMode
-                    }
+                    appPreferences.isDarkModeEnabled = !appPreferences.isDarkModeEnabled
+                    recreate() // Recreate the activity to apply the new theme
                     true
                 }
 
@@ -78,9 +75,9 @@ class ProfileActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
         popup.show()
     }
+
 
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
