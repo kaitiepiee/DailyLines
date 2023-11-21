@@ -143,19 +143,15 @@ class MainActivity : AppCompatActivity(){
 
     // Gets entries under the users name from DB
     private fun getAllEntriesOfCurrentUser(currentUser : String){
-        var entryTitle : String  = " "
-        var entryBody : String = " "
-        var entryDate : String  = " "
-        var entryImage : String  = " "
         db.collection(COLLECTION_ENTRIES)
             .whereEqualTo(FIELD_USER_ID, currentUser)
             .get()
             .addOnSuccessListener { documents ->
                 for(document in documents){
-                    entryTitle = document.get(FIELD_ENT_TITLE).toString()
-                    entryBody = document.get(FIELD_ENT_BODY).toString()
-                    entryDate = document.get(FIELD_DATE).toString()
-                    entryImage = document.get(FIELD_ENT_IMG).toString()
+                    var entryTitle = document.get(FIELD_ENT_TITLE).toString()
+                    var entryBody = document.get(FIELD_ENT_BODY).toString()
+                    var entryDate = document.get(FIELD_DATE).toString()
+                    var entryImage = document.get(FIELD_ENT_IMG).toString()
                     this.entryList.add(
                         EntryModel(
                             entryTitle,
@@ -183,9 +179,9 @@ class MainActivity : AppCompatActivity(){
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
 
-        // On first open of archives page
+        // On first open of archives page -- this section doesn't work for some reason
         val selectedDate = LocalDate.now().toString() // returns "year-month-day"
-        val currentEntries = entryList.filter { it.dateString == selectedDate }
+        val currentEntries = this.entryList.filter { it.dateString == selectedDate }
         myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
         recyclerView.adapter = myAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -196,7 +192,7 @@ class MainActivity : AppCompatActivity(){
             var month = (i1 + 1).toString()
             var day = i2.toString()
             var newSelectedDate = "$year-$month-$day"
-            val currentEntries = entryList.filter { it.dateString == newSelectedDate }
+            val currentEntries = this.entryList.filter { it.dateString == newSelectedDate }
             myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
             recyclerView.adapter = myAdapter
             recyclerView.layoutManager = LinearLayoutManager(this)

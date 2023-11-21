@@ -22,8 +22,8 @@ class ViewNoteActivity : AppCompatActivity() {
 //        const val positionKey: String = "POSITION_KEY"
     }
 
-    private lateinit var titleString: String
-    private lateinit var bodyString: String
+//    private lateinit var titleString: String
+//    private lateinit var bodyString: String
     private lateinit var viewBinding: ActivityViewNoteBinding   // Holds the views of the ActivityViewNoteBinding
 
 
