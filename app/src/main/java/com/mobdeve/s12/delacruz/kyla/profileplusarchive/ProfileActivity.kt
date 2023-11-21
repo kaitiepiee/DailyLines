@@ -29,7 +29,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-// App Preferences for Dark/Normal Mode
+        // App Preferences for Dark/Normal Mode
         appPreferences = AppPreferences(this)
 
         if (appPreferences.isDarkModeEnabled) {

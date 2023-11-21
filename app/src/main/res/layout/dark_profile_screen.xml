@@ -10,13 +10,21 @@
     android:background="@color/darker_black"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/settingsButton"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/settings_icon"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="370dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp">
+
+        <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/settings_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.958"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/userDetailsContainer"
