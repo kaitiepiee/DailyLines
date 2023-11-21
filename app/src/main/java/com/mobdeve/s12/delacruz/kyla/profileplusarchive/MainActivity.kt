@@ -27,7 +27,7 @@ import java.util.Random
 
 
 class MainActivity : AppCompatActivity(){
-//    private lateinit var entryList: ArrayList<EntryModel>
+    private val entryList = ArrayList<EntryModel>()
     private lateinit var emotionList: ArrayList<EmotionModel>
     private lateinit var myAdapter: MyAdapter
     private lateinit var viewBinding: ActivityArchivesBinding
@@ -36,10 +36,10 @@ class MainActivity : AppCompatActivity(){
     private lateinit var quoteTextView: TextView
     private lateinit var authorTextView: TextView
 
-    // [0] declares the db
+    // Declares the db
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    // [0.1] creates constants for us to call so we don't have to type everything
+    // Creates constants for us to call so we don't have to type everything
     private val COLLECTION_EMOTIONS = "Emotions"
     private val COLLECTION_ENTRIES = "Entries"
     private val FIELD_USER_ID = "user_id"
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(){
     private val FIELD_ENT_BODY = "body"
     private val FIELD_ENT_IMG = "image"
 
-    private val temp_current_user = "me"
+    private val current_user = "me"
 
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -135,30 +135,35 @@ class MainActivity : AppCompatActivity(){
                 R.id.nav_archive -> {
                     // Handle the home screen behavior
                     setupArchives()
-
-                    /*
-                    * getAllEntriesOfCurrentUser(temp_current_user) -->
-                    * handleEntryDocuments(documents) -- called inside earlier function -->
-                    * setupArchives(list_of_handled_documents) -- to be called inside earlier function
-                    *
-                    * */
                 }
             }
             true
         }
     }
 
+    // Gets entries under the users name from DB
     private fun getAllEntriesOfCurrentUser(currentUser : String){
+        var entryTitle : String  = " "
+        var entryBody : String = " "
+        var entryDate : String  = " "
+        var entryImage : String  = " "
         db.collection(COLLECTION_ENTRIES)
             .whereEqualTo(FIELD_USER_ID, currentUser)
             .get()
             .addOnSuccessListener { documents ->
-//                handleEntryDocuments(documents)
-                var entryList: ArrayList<EntryModel>
-
-                for (document in documents) {
-                    val entry = document.toObject(EntryModel::class.java)
-                    entryList.add(entry)
+                for(document in documents){
+                    entryTitle = document.get(FIELD_ENT_TITLE).toString()
+                    entryBody = document.get(FIELD_ENT_BODY).toString()
+                    entryDate = document.get(FIELD_DATE).toString()
+                    entryImage = document.get(FIELD_ENT_IMG).toString()
+                    this.entryList.add(
+                        EntryModel(
+                            entryTitle,
+                            entryBody,
+                            entryDate,
+                            entryImage
+                        )
+                    )
                 }
             }
             .addOnFailureListener { exception ->
@@ -167,24 +172,13 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-    // Turns the document DB Entry List Data into something we can use
-    private fun handleEntryDocuments(documents: QuerySnapshot) {
-        /* THIS PART ISNT DONE YET */
-//        for (document in documents) {
-//            Toast.makeText(this,"AH ${document.data}",Toast.LENGTH_LONG).show()
-//        }
-    }
-
-
-
     private fun setupArchives(/*documents: QuerySnapshot*/) {
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
 
-        // Gets the Entry List Data from the DB
-        getAllEntriesOfCurrentUser(temp_current_user)
-        // this.entryList = EntryGenerator.generateData() // <--- this can be delete once the above line is finished
+        // Get all entries of current user and adds them to this.entryList
+        getAllEntriesOfCurrentUser(current_user)
 
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
