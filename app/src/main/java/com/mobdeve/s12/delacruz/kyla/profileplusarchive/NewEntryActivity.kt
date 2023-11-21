@@ -22,7 +22,7 @@ class NewEntryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.create_journal)
+        AppPreferences.applyDarkModeLogic(this, R.layout.create_journal, R.layout.dark_create_journal)
 
         val dateTextView = findViewById<TextView>(R.id.dateCreated)
         val dayOfWeekTextView = findViewById<TextView>(R.id.dayCreated)

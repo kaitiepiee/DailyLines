@@ -21,7 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Random
 
 
@@ -51,9 +53,7 @@ class MainActivity : AppCompatActivity(){
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Set the content view to the home_screen layout
-        setContentView(R.layout.home_screen)
+        AppPreferences.applyDarkModeLogic(this, R.layout.home_screen, R.layout.dark_home_screen)
 
         // For quotes API
         quoteTextView = findViewById(R.id.quote)
@@ -85,6 +85,33 @@ class MainActivity : AppCompatActivity(){
 
             }
         }
+
+        // TODO: input moods
+        // Days of the Week
+        val currentDate = LocalDate.now()
+        val firstDayOfWeek = currentDate.with(DayOfWeek.MONDAY)
+        val dayFormatter = DateTimeFormatter.ofPattern("dd")
+
+        val dayNumbersOfWeek = (0 until 7).map {
+            val date = firstDayOfWeek.plusDays(it.toLong())
+            date.format(dayFormatter)
+        }
+
+        val monDayTextView: TextView = findViewById(R.id.monDay)
+        monDayTextView.text = dayNumbersOfWeek[0]
+        val tuesDayTextView: TextView = findViewById(R.id.tuesDay)
+        tuesDayTextView.text = dayNumbersOfWeek[1]
+        val wedDayTextView: TextView = findViewById(R.id.wedDay)
+        wedDayTextView.text = dayNumbersOfWeek[2]
+        val thuDayTextView: TextView = findViewById(R.id.thuDay)
+        thuDayTextView.text = dayNumbersOfWeek[3]
+        val friDayTextView: TextView = findViewById(R.id.friDay)
+        friDayTextView.text = dayNumbersOfWeek[4]
+        val satDayTextView: TextView = findViewById(R.id.satDay)
+        satDayTextView.text = dayNumbersOfWeek[5]
+        val sunDayTextView: TextView = findViewById(R.id.sunDay)
+        sunDayTextView.text = dayNumbersOfWeek[6]
+
         val worseMoodButton: ImageButton = findViewById(R.id.worseMood)
         worseMoodButton.setOnClickListener { onMoodButtonClick(it) }
         val badMoodButton: ImageButton = findViewById(R.id.badMood)
@@ -131,6 +158,7 @@ class MainActivity : AppCompatActivity(){
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
+
         this.entryList = EntryGenerator.generateData()
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
@@ -154,8 +182,7 @@ class MainActivity : AppCompatActivity(){
             recyclerView.layoutManager = LinearLayoutManager(this)
         }
         val exitButton = findViewById<ImageView>(R.id.cancelButton)
-        exitButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+        exitButton.setOnClickListener {            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
