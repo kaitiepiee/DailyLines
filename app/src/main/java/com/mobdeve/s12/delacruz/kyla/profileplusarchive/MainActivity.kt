@@ -22,8 +22,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Random
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity(){
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity(){
     private lateinit var calendarView: CalendarView
     private lateinit var quoteTextView: TextView
     private lateinit var authorTextView: TextView
+    private lateinit var appTitleTextView: TextView
+    private lateinit var auth: FirebaseAuth
 
     // Declares the db
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -68,14 +74,54 @@ class MainActivity : AppCompatActivity(){
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppPreferences.applyDarkModeLogic(this, R.layout.home_screen, R.layout.dark_home_screen)
 
-        // Set the content view to the home_screen layout
-        setContentView(R.layout.home_screen)
+        // After initializing views and Firebase Authentication
+        appTitleTextView = findViewById(R.id.appTitle)
+        auth = FirebaseAuth.getInstance()
 
+// Check if the user is signed in
+        val currentUser: FirebaseUser? = auth.currentUser
+
+        if (currentUser != null) {
+            // User is signed in, update the welcome message
+            val displayName = currentUser.displayName
+            val welcomeMessage = "Welcome back, $displayName!"
+            appTitleTextView.text = welcomeMessage
+        } else {
+            // User is not signed in, show a default message or handle accordingly
+            appTitleTextView.text = "Daily Lines"
+        }
         // For quotes API
         quoteTextView = findViewById(R.id.quote)
         authorTextView = findViewById(R.id.author)
         RequestManager(this@MainActivity).getAllQuotes(listener)
+
+        // TODO: input moods
+        // Days of the Week
+        val currentDate = LocalDate.now()
+        val firstDayOfWeek = currentDate.with(DayOfWeek.MONDAY)
+        val dayFormatter = DateTimeFormatter.ofPattern("dd")
+
+        val dayNumbersOfWeek = (0 until 7).map {
+            val date = firstDayOfWeek.plusDays(it.toLong())
+            date.format(dayFormatter)
+        }
+
+        val monDayTextView: TextView = findViewById(R.id.monDay)
+        monDayTextView.text = dayNumbersOfWeek[0]
+        val tuesDayTextView: TextView = findViewById(R.id.tuesDay)
+        tuesDayTextView.text = dayNumbersOfWeek[1]
+        val wedDayTextView: TextView = findViewById(R.id.wedDay)
+        wedDayTextView.text = dayNumbersOfWeek[2]
+        val thuDayTextView: TextView = findViewById(R.id.thuDay)
+        thuDayTextView.text = dayNumbersOfWeek[3]
+        val friDayTextView: TextView = findViewById(R.id.friDay)
+        friDayTextView.text = dayNumbersOfWeek[4]
+        val satDayTextView: TextView = findViewById(R.id.satDay)
+        satDayTextView.text = dayNumbersOfWeek[5]
+        val sunDayTextView: TextView = findViewById(R.id.sunDay)
+        sunDayTextView.text = dayNumbersOfWeek[6]
 
         // For mood buttons
         fun onMoodButtonClick(view: View) {
@@ -173,9 +219,9 @@ class MainActivity : AppCompatActivity(){
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
 
+
         // Get all entries of current user and adds them to this.entryList
         getAllEntriesOfCurrentUser(current_user)
-
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
 
@@ -198,8 +244,7 @@ class MainActivity : AppCompatActivity(){
             recyclerView.layoutManager = LinearLayoutManager(this)
         }
         val exitButton = findViewById<ImageView>(R.id.cancelButton)
-        exitButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+        exitButton.setOnClickListener {            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

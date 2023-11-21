@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/dark_navbar_border"
+        android:textColor="@color/white"
+        app:menu="@menu/bottom_navbar"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        tools:ignore="match_parent">
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_horizontal"
+            android:text="Daily Lines"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"
+            android:textSize="28sp" />
+
+
+        <TextView
+            android:id="@+id/quote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:textAlignment="textEnd"
+            android:textSize="15sp"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/monday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/inter"
+                android:text="@string/tuesday"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/inter"
+                android:text="@string/wednesday"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/thursday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/friday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/saturday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+
+                android:text="@string/sunday"
+                android:textAlignment="center"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!--TODO connect to actual days -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/monMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/neutral_mood_icon" />
+
+                <TextView
+                    android:id="@+id/monDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/tuesMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/best_mood_icon" />
+
+                <TextView
+                    android:id="@+id/tuesDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/wedMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/wedDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="20"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/thuMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/thuDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="21"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/friMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/friDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="22"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/satMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/satDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="23"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/sunMood"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/good_mood_icon"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/sunDay"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+
+                    android:text="24"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="350dp"
+            android:layout_height="2dp"
+            android:layout_marginBottom="50dp"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Today I'm Feeling..."
+            android:textAlignment="center"
+            android:fontFamily="@font/inter"
+            android:textSize="12sp"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/dark_rounded_border"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="50dp">
+
+            <ImageButton
+                android:id="@+id/worseMood"
+                android:layout_width="29dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/worst_mood_icon"
+                android:tag="worst_mood" />
+
+            <ImageButton
+                android:id="@+id/badMood"
+                android:layout_width="26dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bad_mood_icon"
+                android:tag="bad_mood" />
+
+            <ImageButton
+                android:id="@+id/neutralMood"
+                android:layout_width="29dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/neutral_mood_icon"
+                android:tag="neutral_mood" />
+
+            <ImageButton
+                android:id="@+id/goodMood"
+                android:layout_width="28dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/good_mood_icon"
+                android:tag="good_mood" />
+
+            <ImageButton
+                android:id="@+id/bestMood"
+                android:layout_width="29dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/button_selector"
+                android:onClick="onMoodButtonClick"
+                android:scaleType="fitCenter"
+                android:src="@drawable/best_mood_icon"
+                android:tag="best_mood" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Daily Reflection"
+            android:textAlignment="center"
+            android:fontFamily="@font/inter"
+            android:textSize="12sp"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="123dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/dark_rounded_border"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/submitEntryButton"
+                android:layout_width="180dp"
+                android:layout_height="35dp"
+                android:background="@drawable/filled_rounded_border"
+                android:text="Start Writing"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
