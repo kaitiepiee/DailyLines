@@ -1,9 +1,9 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,13 +17,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.LocalDate
 import java.util.Random
-
 
 
 class MainActivity : AppCompatActivity(){
@@ -35,14 +36,22 @@ class MainActivity : AppCompatActivity(){
     private lateinit var quoteTextView: TextView
     private lateinit var authorTextView: TextView
 
+    // [0] declares the db
+    private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    // [0.1] creates constants for us to call so we don't have to type everything
+    private val KEY_EMNAME = "Em_Name"
+    private val KEY_EMTION_PATH = "Emotions"
+
+
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             // The activity was launched and returned a successful result
             val data: Intent? = result.data
             // Process the data or take action based on the result here
-        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+        } else if (result.resultCode == RESULT_CANCELED) {
             // The activity was canceled by the user
             // Handle cancellation here, if needed
         }
@@ -63,7 +72,6 @@ class MainActivity : AppCompatActivity(){
         // For mood buttons
         fun onMoodButtonClick(view: View) {
             val moodTag = view.tag.toString()
-
             val parentLayout = view.parent as LinearLayout
             for (i in 0 until parentLayout.childCount) {
                 val childView = parentLayout.getChildAt(i)
@@ -73,7 +81,6 @@ class MainActivity : AppCompatActivity(){
                     childView.setBackgroundResource(android.R.color.transparent)
                 }
             }
-
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 view.setBackgroundResource(R.drawable.glow_background)
@@ -82,9 +89,9 @@ class MainActivity : AppCompatActivity(){
             else {
                 view.setBackgroundResource(android.R.color.transparent)
                 Toast.makeText(this, "Deselected mood: $moodTag", Toast.LENGTH_SHORT).show()
-
             }
         }
+
         val worseMoodButton: ImageButton = findViewById(R.id.worseMood)
         worseMoodButton.setOnClickListener { onMoodButtonClick(it) }
         val badMoodButton: ImageButton = findViewById(R.id.badMood)
@@ -125,6 +132,32 @@ class MainActivity : AppCompatActivity(){
             }
             true
         }
+
+
+        // [1] THIS IS HOW TO ADD DATA TO THE DB
+//        val add = HashMap<String,Any>()
+//        add[KEY_EMNAME] = "bad"
+//        db.collection(KEY_EMTION_PATH)
+//            .add(add)
+//            .addOnSuccessListener {
+//                Toast.makeText(this,"Data added ",Toast.LENGTH_LONG).show()
+//            }
+//            .addOnFailureListener {
+//                Toast.makeText(this," Data not added ",Toast.LENGTH_LONG).show()
+//            }
+
+        db.collection(KEY_EMTION_PATH)
+            .whereEqualTo(KEY_EMNAME, "bad")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Toast.makeText(this,"${document.id} => ${document.data}",Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this,"Error getting documents: $exception",Toast.LENGTH_LONG).show()
+            }
+
 
     }
     private fun setupArchives() {
