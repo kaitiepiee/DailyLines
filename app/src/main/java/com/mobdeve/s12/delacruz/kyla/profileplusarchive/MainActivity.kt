@@ -1,7 +1,5 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
-import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -22,13 +20,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.LocalDate
 import java.util.Random
 
 
 class MainActivity : AppCompatActivity(){
-    private lateinit var entryList: ArrayList<EntryModel>
+//    private lateinit var entryList: ArrayList<EntryModel>
+    private lateinit var emotionList: ArrayList<EmotionModel>
     private lateinit var myAdapter: MyAdapter
     private lateinit var viewBinding: ActivityArchivesBinding
     private lateinit var recyclerView: RecyclerView
@@ -40,9 +40,17 @@ class MainActivity : AppCompatActivity(){
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     // [0.1] creates constants for us to call so we don't have to type everything
-    private val KEY_EMNAME = "Em_Name"
-    private val KEY_EMTION_PATH = "Emotions"
+    private val COLLECTION_EMOTIONS = "Emotions"
+    private val COLLECTION_ENTRIES = "Entries"
+    private val FIELD_USER_ID = "user_id"
+    private val FIELD_DATE = "datestring"
 
+    private val FIELD_EMO_TRACKED = "emotion_tracked"
+    private val FIELD_ENT_TITLE = "title"
+    private val FIELD_ENT_BODY = "body"
+    private val FIELD_ENT_IMG = "image"
+
+    private val temp_current_user = "me"
 
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -109,7 +117,6 @@ class MainActivity : AppCompatActivity(){
             val intent = Intent(this, NewEntryActivity::class.java)
             startActivity(intent)
         }
-
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
 
         // Set an OnItemSelectedListener for the BottomNavigationView
@@ -128,43 +135,57 @@ class MainActivity : AppCompatActivity(){
                 R.id.nav_archive -> {
                     // Handle the home screen behavior
                     setupArchives()
+
+                    /*
+                    * getAllEntriesOfCurrentUser(temp_current_user) -->
+                    * handleEntryDocuments(documents) -- called inside earlier function -->
+                    * setupArchives(list_of_handled_documents) -- to be called inside earlier function
+                    *
+                    * */
                 }
             }
             true
         }
+    }
 
-
-        // [1] THIS IS HOW TO ADD DATA TO THE DB
-//        val add = HashMap<String,Any>()
-//        add[KEY_EMNAME] = "bad"
-//        db.collection(KEY_EMTION_PATH)
-//            .add(add)
-//            .addOnSuccessListener {
-//                Toast.makeText(this,"Data added ",Toast.LENGTH_LONG).show()
-//            }
-//            .addOnFailureListener {
-//                Toast.makeText(this," Data not added ",Toast.LENGTH_LONG).show()
-//            }
-
-        db.collection(KEY_EMTION_PATH)
-            .whereEqualTo(KEY_EMNAME, "bad")
+    private fun getAllEntriesOfCurrentUser(currentUser : String){
+        db.collection(COLLECTION_ENTRIES)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
             .get()
             .addOnSuccessListener { documents ->
+//                handleEntryDocuments(documents)
+                var entryList: ArrayList<EntryModel>
+
                 for (document in documents) {
-                    Toast.makeText(this,"${document.id} => ${document.data}",Toast.LENGTH_LONG).show()
+                    val entry = document.toObject(EntryModel::class.java)
+                    entryList.add(entry)
                 }
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(this,"Error getting documents: $exception",Toast.LENGTH_LONG).show()
             }
-
-
     }
-    private fun setupArchives() {
+
+
+    // Turns the document DB Entry List Data into something we can use
+    private fun handleEntryDocuments(documents: QuerySnapshot) {
+        /* THIS PART ISNT DONE YET */
+//        for (document in documents) {
+//            Toast.makeText(this,"AH ${document.data}",Toast.LENGTH_LONG).show()
+//        }
+    }
+
+
+
+    private fun setupArchives(/*documents: QuerySnapshot*/) {
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
-        this.entryList = EntryGenerator.generateData()
+
+        // Gets the Entry List Data from the DB
+        getAllEntriesOfCurrentUser(temp_current_user)
+        // this.entryList = EntryGenerator.generateData() // <--- this can be delete once the above line is finished
+
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
 
@@ -225,7 +246,6 @@ class MainActivity : AppCompatActivity(){
                 }
             }
         }
-
         override fun didError(message: String) {
             Log.e("QuoteError", message)
         }
