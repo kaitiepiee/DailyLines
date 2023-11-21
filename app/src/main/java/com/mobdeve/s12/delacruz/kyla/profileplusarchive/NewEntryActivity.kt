@@ -9,7 +9,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.text.SimpleDateFormat
@@ -19,6 +21,21 @@ import java.util.Locale
 
 class NewEntryActivity : AppCompatActivity() {
     private val PICK_IMAGE_REQUEST = 1
+
+    // Declares the db
+    private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
+    // Creates constants for us to call so we don't have to type everything
+    private val COLLECTION_EMOTIONS = "Emotions"
+    private val COLLECTION_ENTRIES = "Entries"
+    private val FIELD_USER_ID = "user_id"
+    private val FIELD_DATE = "datestring"
+    private val FIELD_EMO_TRACKED = "emotion_tracked"
+    private val FIELD_ENT_TITLE = "title"
+    private val FIELD_ENT_BODY = "body"
+    private val FIELD_ENT_IMG = "image"
+    private val current_user = "me"
+
+    private val addToDB = HashMap<String,Any>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +58,8 @@ class NewEntryActivity : AppCompatActivity() {
         // Set the current day of the week in the TextView
         dayOfWeekTextView.text = currentDayOfWeek;
 
-
         // Add Image Button
         val addImgButton = findViewById<ImageButton>(R.id.addImgButton)
-
         addImgButton.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
@@ -52,12 +67,38 @@ class NewEntryActivity : AppCompatActivity() {
         }
 
         // Submit Button
-        // TODO: Add submission to database
+        // TODO: Add submission to database -- MISSING IMAGE !!!!!!
         val submitEntryButton = findViewById<Button>(R.id.submitButton)
         submitEntryButton.setOnClickListener {
+
+            // Get the values for title and body
+            val titleTextView = findViewById<TextView>(R.id.titleTv)
+            val bodyTextView = findViewById<TextView>(R.id.bodyTv)
+            var titleString = titleTextView.text.toString()
+            var bodyString = bodyTextView.text.toString()
+
+            // Get the current date and format it into appropriate datestring
+            val preDateString = SimpleDateFormat("yyyy-M-dd", Locale.getDefault())
+            var dateString = preDateString.format(Date())
+
+            // Pass these to the database
+            this.addToDB[FIELD_ENT_TITLE] = titleString
+            this.addToDB[FIELD_ENT_BODY] = bodyString
+            this.addToDB[FIELD_DATE] = dateString
+            this.addToDB[FIELD_USER_ID] = this.current_user
+            db.collection(COLLECTION_ENTRIES)
+                .add(addToDB)
+                .addOnSuccessListener {
+                    Toast.makeText(this,"Data added ",Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this," Data not added ",Toast.LENGTH_LONG).show()
+                }
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
 
         // Exit Button
         val exitButton = findViewById<ImageView>(com.mobdeve.s12.delacruz.kyla.profileplusarchive.R.id.cancelButton)
@@ -66,6 +107,7 @@ class NewEntryActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

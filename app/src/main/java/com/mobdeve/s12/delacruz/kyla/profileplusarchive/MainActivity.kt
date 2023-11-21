@@ -1,9 +1,7 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,9 +15,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -29,9 +30,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 
-
 class MainActivity : AppCompatActivity(){
-    private lateinit var entryList: ArrayList<EntryModel>
+    private val entryList = ArrayList<EntryModel>()
+    private lateinit var emotionList: ArrayList<EmotionModel>
     private lateinit var myAdapter: MyAdapter
     private lateinit var viewBinding: ActivityArchivesBinding
     private lateinit var recyclerView: RecyclerView
@@ -41,14 +42,30 @@ class MainActivity : AppCompatActivity(){
     private lateinit var appTitleTextView: TextView
     private lateinit var auth: FirebaseAuth
 
+    // Declares the db
+    private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    // Creates constants for us to call so we don't have to type everything
+    private val COLLECTION_EMOTIONS = "Emotions"
+    private val COLLECTION_ENTRIES = "Entries"
+    private val FIELD_USER_ID = "user_id"
+    private val FIELD_DATE = "datestring"
+
+    private val FIELD_EMO_TRACKED = "emotion_tracked"
+    private val FIELD_ENT_TITLE = "title"
+    private val FIELD_ENT_BODY = "body"
+    private val FIELD_ENT_IMG = "image"
+
+    private val current_user = "me"
+
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             // The activity was launched and returned a successful result
             val data: Intent? = result.data
             // Process the data or take action based on the result here
-        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+        } else if (result.resultCode == RESULT_CANCELED) {
             // The activity was canceled by the user
             // Handle cancellation here, if needed
         }
@@ -109,7 +126,6 @@ class MainActivity : AppCompatActivity(){
         // For mood buttons
         fun onMoodButtonClick(view: View) {
             val moodTag = view.tag.toString()
-
             val parentLayout = view.parent as LinearLayout
             for (i in 0 until parentLayout.childCount) {
                 val childView = parentLayout.getChildAt(i)
@@ -119,7 +135,6 @@ class MainActivity : AppCompatActivity(){
                     childView.setBackgroundResource(android.R.color.transparent)
                 }
             }
-
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 view.setBackgroundResource(R.drawable.glow_background)
@@ -128,7 +143,6 @@ class MainActivity : AppCompatActivity(){
             else {
                 view.setBackgroundResource(android.R.color.transparent)
                 Toast.makeText(this, "Deselected mood: $moodTag", Toast.LENGTH_SHORT).show()
-
             }
         }
 
@@ -149,7 +163,6 @@ class MainActivity : AppCompatActivity(){
             val intent = Intent(this, NewEntryActivity::class.java)
             startActivity(intent)
         }
-
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
 
         // Set an OnItemSelectedListener for the BottomNavigationView
@@ -172,20 +185,49 @@ class MainActivity : AppCompatActivity(){
             }
             true
         }
-
     }
-    private fun setupArchives() {
+
+    // Gets entries under the users name from DB
+    private fun getAllEntriesOfCurrentUser(currentUser : String){
+        db.collection(COLLECTION_ENTRIES)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .get()
+            .addOnSuccessListener { documents ->
+                for(document in documents){
+                    var entryTitle = document.get(FIELD_ENT_TITLE).toString()
+                    var entryBody = document.get(FIELD_ENT_BODY).toString()
+                    var entryDate = document.get(FIELD_DATE).toString()
+                    var entryImage = document.get(FIELD_ENT_IMG).toString()
+                    this.entryList.add(
+                        EntryModel(
+                            entryTitle,
+                            entryBody,
+                            entryDate,
+                            entryImage
+                        )
+                    )
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this,"Error getting documents: $exception",Toast.LENGTH_LONG).show()
+            }
+    }
+
+
+    private fun setupArchives(/*documents: QuerySnapshot*/) {
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
 
-        this.entryList = EntryGenerator.generateData()
+
+        // Get all entries of current user and adds them to this.entryList
+        getAllEntriesOfCurrentUser(current_user)
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
 
-        // On first open of archives page
+        // On first open of archives page -- this section doesn't work for some reason
         val selectedDate = LocalDate.now().toString() // returns "year-month-day"
-        val currentEntries = entryList.filter { it.dateString == selectedDate }
+        val currentEntries = this.entryList.filter { it.dateString == selectedDate }
         myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
         recyclerView.adapter = myAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -196,7 +238,7 @@ class MainActivity : AppCompatActivity(){
             var month = (i1 + 1).toString()
             var day = i2.toString()
             var newSelectedDate = "$year-$month-$day"
-            val currentEntries = entryList.filter { it.dateString == newSelectedDate }
+            val currentEntries = this.entryList.filter { it.dateString == newSelectedDate }
             myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
             recyclerView.adapter = myAdapter
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -239,7 +281,6 @@ class MainActivity : AppCompatActivity(){
                 }
             }
         }
-
         override fun didError(message: String) {
             Log.e("QuoteError", message)
         }
