@@ -39,7 +39,15 @@ class LoginActivity : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        mGoogleSignInClient = GoogleSignInManager.getGoogleSignInClient(this)
+
+        // Check if the user is already signed in
+        val currentUser = mAuth.currentUser
+        if (currentUser != null) {
+            // User is already signed in, redirect to the main activity
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         val signInButton: View = findViewById(R.id.sign_in_button)
         signInButton.setOnClickListener {
@@ -66,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
             // Sign out the current user if one exists
             mAuth.signOut()
             mGoogleSignInClient.signOut().addOnCompleteListener(this) {
+
                 // After signing out, proceed with the new sign-in
                 startGoogleSignIn()
             }
@@ -134,9 +143,10 @@ class LoginActivity : AppCompatActivity() {
             val usersCollection = db.collection("Users")
 
             val userData = hashMapOf(
-                "userId" to it.uid,
-                "displayName" to it.displayName,
+                "user_id" to it.uid,
+                "profileName" to it.displayName,
                 "email" to it.email,
+                "photoUrl" to it.photoUrl
                 // TODO: if other data is needed, get from here
             )
 

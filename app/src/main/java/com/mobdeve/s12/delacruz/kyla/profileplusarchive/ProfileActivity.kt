@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -38,7 +39,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         mAuth = FirebaseAuth.getInstance()
-// Fetch the current user from Firebase Authentication
+        // Fetch the current user from Firebase Authentication
         val currentUser: FirebaseUser? = mAuth.currentUser
 
         // Fetch the GoogleSignInAccount
@@ -152,9 +153,13 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
-        Log.d("SignOut", "User signed out") // Add this line for debugging
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
+        val mGoogleSignInClient = GoogleSignInManager.getGoogleSignInClient(this)
+        mGoogleSignInClient.signOut().addOnCompleteListener(this) {
+            Log.d("SignOut", "User signed out")
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
+
 }
