@@ -62,8 +62,8 @@ class ViewNoteActivity : AppCompatActivity() {
             imageToDisplay.visibility = View.GONE
         } else{
 ////            val imageUri: Uri = Uri.parse(imageString)
-            val storageRef: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageString!!)
-            Glide.with(this).load(storageRef).into(imageToDisplay)
+//            val storageRef: StorageReference = FirebaseStorage.getInstance().getReference(imageString!!)
+//            Glide.with(this).load(storageRef).into(imageToDisplay)
 //            val oneMegabyte = 1024 * 1024
 //
 //            storageRef.getBytes(oneMegabyte.toLong())
