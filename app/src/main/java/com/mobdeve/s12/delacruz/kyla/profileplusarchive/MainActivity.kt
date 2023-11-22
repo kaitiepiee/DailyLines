@@ -239,12 +239,13 @@ class MainActivity : AppCompatActivity(){
                     childView.setBackgroundResource(android.R.color.transparent)
                 }
             }
+
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 view.setBackgroundResource(R.drawable.glow_background)
                 Toast.makeText(this, "Selected mood: $mood", Toast.LENGTH_SHORT).show()
 
-                getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[5]) { item ->
+                getEmotionOfCurrentUserAndDate(current_user, currentDate) { item ->
                     if (item != null) {
                         updateEmotionInDB(current_user, currentDate, mood)
                     }
@@ -259,7 +260,7 @@ class MainActivity : AppCompatActivity(){
                 Toast.makeText(this, "Deselected mood: $mood", Toast.LENGTH_SHORT).show()
 
                 // remove from the database
-                getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[5]) { item ->
+                getEmotionOfCurrentUserAndDate(current_user, currentDate) { item ->
                     if (item != null) {
                         removeEmotionFromDB(current_user, currentDate)
                     }
@@ -268,8 +269,8 @@ class MainActivity : AppCompatActivity(){
         }
 
 
-        val worseMoodButton: ImageButton = findViewById(R.id.worseMood)
-        worseMoodButton.setOnClickListener { onMoodButtonClick(it, "worse") }
+        val worstMoodButton: ImageButton = findViewById(R.id.worstMood)
+        worstMoodButton.setOnClickListener { onMoodButtonClick(it, "worst") }
         val badMoodButton: ImageButton = findViewById(R.id.badMood)
         badMoodButton.setOnClickListener { onMoodButtonClick(it, "bad") }
         val neutralMoodButton: ImageButton = findViewById(R.id.neutralMood)
