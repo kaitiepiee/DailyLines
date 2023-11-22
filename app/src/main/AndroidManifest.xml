@@ -46,6 +46,10 @@
             android:name=".EditProfileActivity"
             android:label="Edit Profile">
         </activity>
+
+        <activity
+            android:name=".SignUpActivity" >
+        </activity>
     </application>
 
 </manifest>
