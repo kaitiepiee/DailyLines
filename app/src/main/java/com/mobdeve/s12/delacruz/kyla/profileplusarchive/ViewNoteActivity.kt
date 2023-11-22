@@ -61,15 +61,15 @@ class ViewNoteActivity : AppCompatActivity() {
             imageToDisplay.visibility = View.GONE
         } else{
 //            val imageUri: Uri = Uri.parse(imageString)
-//            val storageRef: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageString!!)
-//            val oneMegabyte = 1024 * 1024
-//
-//            storageRef.getBytes(oneMegabyte.toLong())
-//                .addOnSuccessListener { bytes ->
-//                    var bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-//                    imageToDisplay.setImageBitmap(bm)
-//                    imageToDisplay.visibility = View.VISIBLE
-//                }
+            val storageRef: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageString!!)
+            val oneMegabyte = 1024 * 1024
+
+            storageRef.getBytes(oneMegabyte.toLong())
+                .addOnSuccessListener { bytes ->
+                    var bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    imageToDisplay.setImageBitmap(bm)
+                    imageToDisplay.visibility = View.VISIBLE
+                }
 //            imageToDisplay.setImageURI(imageUri)s
 //            imageToDisplay.visibility = View.VISIBLE
         }
