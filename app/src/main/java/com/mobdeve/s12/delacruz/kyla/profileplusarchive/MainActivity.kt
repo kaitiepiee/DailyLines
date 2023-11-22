@@ -220,6 +220,7 @@ class MainActivity : AppCompatActivity(){
         setContentView(this.viewBinding.root)
 
 
+        
         // Get all entries of current user and adds them to this.entryList
         getAllEntriesOfCurrentUser(current_user)
         recyclerView = viewBinding.recyclerView
