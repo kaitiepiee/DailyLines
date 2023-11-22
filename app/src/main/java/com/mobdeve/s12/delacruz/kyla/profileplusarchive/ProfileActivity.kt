@@ -72,14 +72,24 @@ class ProfileActivity : AppCompatActivity() {
         // Update UI with the user's information
         updateUI(currentUser, googleSignInAccount)
 
-        // Get a list of all entries for that user in the database and count them
+        // Get a list of all entries for that user in the database: count them and calculate user streak
         db.collection(COLLECTION_ENTRIES)
             .whereEqualTo(FIELD_USER_ID, current_user_id)
             .get()
             .addOnSuccessListener { documents ->
+                // counts number of entries and displays number
                 var numberOfEntires = documents.size()
                 val journalEntriesTextView = findViewById<TextView>(R.id.numJournalEntriesTv)
                 journalEntriesTextView.text = "${numberOfEntires}"
+
+                // counts number of days in streak and displays number
+                // TO DO: this whole thing
+                var listOfDocuments = documents.sortedByAscending { FIELD_DATE }
+                for(document in listOfDocuments){
+                    Toast.makeText(this, "${document.get(FIELD_DATE)}", Toast.LENGTH_SHORT).show()
+                }
+
+                val streakTextView = findViewById<TextView>(R.id.longestStreakTv)
             }
             .addOnFailureListener { exception ->
                 Log.d(ContentValues.TAG, "Error getting documents: $exception")

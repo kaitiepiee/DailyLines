@@ -14,6 +14,7 @@ class MyAdapter(private val entryList: List<EntryModel>, private val viewNoteLau
         const val titleKey : String = "TITLE_KEY"
         const val bodyKey : String = "BODY_KEY"
         const val dateKey : String = "DATE_KEY"
+        const val imageKey : String = "IMAGE_KEY"
 //        const val positionKey : String = "POSITION_KEY"
     }
 
@@ -34,6 +35,7 @@ class MyAdapter(private val entryList: List<EntryModel>, private val viewNoteLau
             intent.putExtra(titleKey, entryList[position].title)
             intent.putExtra(bodyKey, entryList[position].body)
             intent.putExtra(dateKey, entryList[position].dateString)
+            intent.putExtra(imageKey, entryList[position].image)
             viewNoteLauncher.launch(intent)
         }
     }

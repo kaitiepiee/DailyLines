@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -41,6 +42,7 @@ class NewEntryActivity : AppCompatActivity() {
     private var current_user_id = ""
 
     private val addToDB = HashMap<String,Any>()
+    private var entryImage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,8 +82,7 @@ class NewEntryActivity : AppCompatActivity() {
             startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
         }
 
-        // Submit Button
-        // TODO: Add submission to database -- MISSING IMAGE !!!!!!
+        // Submit Button -- adds submission to our database
         val submitEntryButton = findViewById<Button>(R.id.submitButton)
         submitEntryButton.setOnClickListener {
 
@@ -91,15 +92,21 @@ class NewEntryActivity : AppCompatActivity() {
             var titleString = titleTextView.text.toString()
             var bodyString = bodyTextView.text.toString()
 
+            // Makes the body scrollable
+            bodyTextView.movementMethod = ScrollingMovementMethod.getInstance()
+
             // Get the current date and format it into appropriate datestring
             val preDateString = SimpleDateFormat("yyyy-M-dd", Locale.getDefault())
             var dateString = preDateString.format(Date())
+
+//            Toast.makeText(this, "${this.entryImage}", Toast.LENGTH_SHORT).show()
 
             // Pass these to the database
             this.addToDB[FIELD_ENT_TITLE] = titleString
             this.addToDB[FIELD_ENT_BODY] = bodyString
             this.addToDB[FIELD_DATE] = dateString
             this.addToDB[FIELD_USER_ID] = this.current_user_id
+            this.addToDB[FIELD_ENT_IMG] = this.entryImage
             db.collection(COLLECTION_ENTRIES)
                 .add(addToDB)
                 .addOnSuccessListener {
@@ -112,7 +119,6 @@ class NewEntryActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         // Exit Button
         val exitButton = findViewById<ImageView>(com.mobdeve.s12.delacruz.kyla.profileplusarchive.R.id.cancelButton)
         exitButton.setOnClickListener {
@@ -122,9 +128,15 @@ class NewEntryActivity : AppCompatActivity() {
     }
 
 
+//    Toast.makeText(this, "$imageUri", Toast.LENGTH_SHORT).show()
+//    // Save this URI so we can pass it to our database
+//    this.entryImage = imageUri.toString()
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val imgPreview = findViewById<ImageView>(R.id.imgPreview)
+
+//        Toast.makeText(this, "IN HERE  ${imgPreview.image}", Toast.LENGTH_SHORT).show()
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
@@ -147,7 +159,7 @@ class NewEntryActivity : AppCompatActivity() {
                 // Image uploaded successfully
                 // Get the download URL and store it in the database
                 imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    // Store the downloadUri in the database along with other journal entry details
+                    // Store the downloadUri in the database along with other journal entry details -- we need the uri in here
                 }
             }
             .addOnFailureListener { exception ->

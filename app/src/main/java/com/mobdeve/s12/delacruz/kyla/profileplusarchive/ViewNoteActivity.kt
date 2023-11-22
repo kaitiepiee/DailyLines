@@ -2,15 +2,18 @@ package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.common.base.Ascii.toLowerCase
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityViewNoteBinding
+import com.squareup.picasso.Picasso
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
@@ -21,6 +24,7 @@ class ViewNoteActivity : AppCompatActivity() {
         const val titleKey : String = "TITLE_KEY"
         const val bodyKey : String = "BODY_KEY"
         const val dateKey : String = "DATE_KEY"
+        const val imageKey : String = "IMAGE_KEY"
 //        const val positionKey: String = "POSITION_KEY"
     }
 
@@ -40,6 +44,7 @@ class ViewNoteActivity : AppCompatActivity() {
         val detailBody = viewBinding.bodyTv
         val dateCreated = viewBinding.dateCreated
         val dayCreated = viewBinding.dayCreated
+        val imageToDisplay = viewBinding.img
 
         // makes the body scrollable
         detailBody.movementMethod = ScrollingMovementMethod.getInstance()
@@ -49,6 +54,16 @@ class ViewNoteActivity : AppCompatActivity() {
         detailTitle.text = titleData
         val bodyData = intent.getStringExtra(bodyKey)
         detailBody.text = bodyData
+        val imageString = intent.getStringExtra(imageKey)
+
+        // shows the image from the db in the entry by turning the string into the uri, removes the section if theres no image
+        if(imageString == ""){
+            imageToDisplay.visibility = View.GONE
+        } else{
+//            val imageUri: Uri = Uri.parse(imageString)
+//            imageToDisplay.setImageURI(imageUri)
+            imageToDisplay.visibility = View.VISIBLE
+        }
 
         // Get the values for date and display it
         var fullDateString = intent.getStringExtra(dateKey)
