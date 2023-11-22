@@ -12,6 +12,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.common.base.Ascii.toLowerCase
 import com.google.firebase.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -61,7 +62,8 @@ class ViewNoteActivity : AppCompatActivity() {
             imageToDisplay.visibility = View.GONE
         } else{
 ////            val imageUri: Uri = Uri.parse(imageString)
-//            val storageRef: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageString!!)
+            val storageRef: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageString!!)
+            Glide.with(this).load(storageRef).into(imageToDisplay)
 //            val oneMegabyte = 1024 * 1024
 //
 //            storageRef.getBytes(oneMegabyte.toLong())
