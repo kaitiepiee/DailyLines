@@ -1,5 +1,6 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -31,7 +32,7 @@ import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity(){
-    private val entryList = ArrayList<EntryModel>()
+    private var entryList = ArrayList<EntryModel>()
     private lateinit var emotionList: ArrayList<EmotionModel>
     private lateinit var myAdapter: MyAdapter
     private lateinit var viewBinding: ActivityArchivesBinding
@@ -209,12 +210,18 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this,"Error getting documents: $exception",Toast.LENGTH_LONG).show()
+                Log.d(TAG, "Error getting documents: $exception")
             }
     }
 
 
     private fun setupArchives(/*documents: QuerySnapshot*/) {
+
+        // Check if the entry list is empty
+        if(entryList.isEmpty()){
+            Toast.makeText(this, "Click any date to view entries", Toast.LENGTH_LONG).show()
+        }
+
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
@@ -226,11 +233,12 @@ class MainActivity : AppCompatActivity(){
         calendarView = viewBinding.calendarView
 
         // On first open of archives page -- this section doesn't work for some reason
-        val selectedDate = LocalDate.now().toString() // returns "year-month-day"
-        val currentEntries = this.entryList.filter { it.dateString == selectedDate }
-        myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
-        recyclerView.adapter = myAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+//        val selectedDate = LocalDate.now().toString() // returns "year-month-day"
+//        Toast.makeText(this, "$selectedDate", Toast.LENGTH_SHORT).show()
+//        val currentEntries = this.entryList.filter { it.dateString == selectedDate }
+//        myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
+//        recyclerView.adapter = myAdapter
+//        recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Upon change of date in archive page
         calendarView.setOnDateChangeListener { _, i, i1, i2 ->
