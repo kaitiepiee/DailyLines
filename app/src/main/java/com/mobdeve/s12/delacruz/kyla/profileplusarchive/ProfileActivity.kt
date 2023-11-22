@@ -23,6 +23,10 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -80,16 +84,46 @@ class ProfileActivity : AppCompatActivity() {
                 // counts number of entries and displays number
                 var numberOfEntires = documents.size()
                 val journalEntriesTextView = findViewById<TextView>(R.id.numJournalEntriesTv)
-                journalEntriesTextView.text = "${numberOfEntires}"
+                journalEntriesTextView.text = "$numberOfEntires"
 
                 // counts number of days in streak and displays number
                 // TO DO: this whole thing
-                var listOfDocuments = documents.sortedByAscending { FIELD_DATE }
-                for(document in listOfDocuments){
-                    Toast.makeText(this, "${document.get(FIELD_DATE)}", Toast.LENGTH_SHORT).show()
+                var numStreak = 0
+
+                // get list of the dates of all entries made by the user
+                var listOfDates = arrayOf<String>()
+                for(document in documents){
+                    listOfDates += document.get(FIELD_DATE).toString()
                 }
 
+                // sort the dates such that the first is the most recent date
+                listOfDates.sortDescending()
+
+                // get current date
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val current = LocalDateTime.now().format(formatter)
+
+                // check if they made an entry today (if none, no streak; if yes, calculate the streak)
+                if(listOfDates[0] != current){
+                    numStreak = 0
+                }else{
+                    var latestDate = LocalDate.parse(current)
+                    var counter = 0
+                    for(date in listOfDates){
+                        var parsedDate = LocalDate.parse(date)
+                        var dateMinus1 = latestDate.minusDays(1)
+                        // if the first date is the current date, increment counter once
+                        if(counter == 0 && latestDate == parsedDate){ numStreak++ }
+                        counter++
+                        // for all succeeding, only increment counter if the parsed date is exactly 1 day after the previous date
+                        if(parsedDate == dateMinus1){
+                            numStreak++
+                        }
+                        latestDate = parsedDate
+                    }
+                }
                 val streakTextView = findViewById<TextView>(R.id.longestStreakTv)
+                streakTextView.text = "$numStreak"
             }
             .addOnFailureListener { exception ->
                 Log.d(ContentValues.TAG, "Error getting documents: $exception")
