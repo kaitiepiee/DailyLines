@@ -89,26 +89,22 @@
             <!-- TODO place in scroll view -->
             <EditText
                 android:id="@+id/bodyTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="333dp"
                 android:layout_marginTop="25dp"
 
                 android:background="@null"
                 android:fontFamily="@font/inter"
+                android:gravity="left"
                 android:hint="Reflection"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="8sp"
+                android:scrollbars="vertical"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
-
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <ImageButton

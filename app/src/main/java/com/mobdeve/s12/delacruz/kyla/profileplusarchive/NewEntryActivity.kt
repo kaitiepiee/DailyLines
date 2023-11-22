@@ -82,13 +82,15 @@ class NewEntryActivity : AppCompatActivity() {
             startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
         }
 
+        // access the title and body text views
+        val titleTextView = findViewById<TextView>(R.id.titleTv)
+        val bodyTextView = findViewById<TextView>(R.id.bodyTv)
+
         // Submit Button -- adds submission to our database
         val submitEntryButton = findViewById<Button>(R.id.submitButton)
         submitEntryButton.setOnClickListener {
 
             // Get the values for title and body
-            val titleTextView = findViewById<TextView>(R.id.titleTv)
-            val bodyTextView = findViewById<TextView>(R.id.bodyTv)
             var titleString = titleTextView.text.toString()
             var bodyString = bodyTextView.text.toString()
 
