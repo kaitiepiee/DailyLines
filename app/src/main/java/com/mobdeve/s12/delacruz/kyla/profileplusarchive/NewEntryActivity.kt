@@ -1,9 +1,11 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -89,10 +91,11 @@ class NewEntryActivity : AppCompatActivity() {
             db.collection(COLLECTION_ENTRIES)
                 .add(addToDB)
                 .addOnSuccessListener {
-                    Toast.makeText(this,"Data added ",Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "Data added")
+                    
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this," Data not added ",Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "Data not added")
                 }
 
             val intent = Intent(this, MainActivity::class.java)

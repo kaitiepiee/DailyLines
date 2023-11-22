@@ -204,7 +204,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/tempSpaceCl"
             android:layout_width="0dp"
-            android:layout_height="260dp"
+            android:layout_height="238dp"
             android:layout_marginTop="28dp"
             android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="@+id/profileContianerSIv"
