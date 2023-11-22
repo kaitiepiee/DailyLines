@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(){
     private val FIELD_ENT_BODY = "body"
     private val FIELD_ENT_IMG = "image"
 
-    private val current_user = "me"
+    private var current_user_id = ""
 
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -80,12 +80,11 @@ class MainActivity : AppCompatActivity(){
         // After initializing views and Firebase Authentication
         appTitleTextView = findViewById(R.id.appTitle)
         auth = FirebaseAuth.getInstance()
-
-// Check if the user is signed in
+        // Check if the user is signed in
         val currentUser: FirebaseUser? = auth.currentUser
-
         if (currentUser != null) {
             // User is signed in, update the welcome message
+            current_user_id = currentUser.uid
             val displayName = currentUser.displayName
             val welcomeMessage = "Welcome back, $displayName!"
             appTitleTextView.text = welcomeMessage
@@ -93,6 +92,7 @@ class MainActivity : AppCompatActivity(){
             // User is not signed in, show a default message or handle accordingly
             appTitleTextView.text = "Daily Lines"
         }
+
         // For quotes API
         quoteTextView = findViewById(R.id.quote)
         authorTextView = findViewById(R.id.author)
@@ -189,9 +189,9 @@ class MainActivity : AppCompatActivity(){
     }
 
     // Gets entries under the users name from DB
-    private fun getAllEntriesOfCurrentUser(currentUser : String){
+    private fun getAllEntriesOfCurrentUser(currentUserId : String){
         db.collection(COLLECTION_ENTRIES)
-            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .whereEqualTo(FIELD_USER_ID, currentUserId)
             .get()
             .addOnSuccessListener { documents ->
                 for(document in documents){
@@ -214,7 +214,6 @@ class MainActivity : AppCompatActivity(){
             }
     }
 
-
     private fun setupArchives(/*documents: QuerySnapshot*/) {
 
         // Check if the entry list is empty
@@ -226,10 +225,8 @@ class MainActivity : AppCompatActivity(){
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
 
-
-
         // Get all entries of current user and adds them to this.entryList
-        getAllEntriesOfCurrentUser(current_user)
+        getAllEntriesOfCurrentUser(current_user_id)
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
 

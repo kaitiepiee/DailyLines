@@ -44,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
     private val FIELD_ENT_BODY = "body"
     private val FIELD_ENT_IMG = "image"
 
-    private val current_user = "me"
+    private var current_user_id = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +61,11 @@ class ProfileActivity : AppCompatActivity() {
         // Fetch the current user from Firebase Authentication
         val currentUser: FirebaseUser? = mAuth.currentUser
 
+        if (currentUser != null) {
+            // User is signed in, update the welcome message
+            current_user_id = currentUser.uid
+        }
+
         // Fetch the GoogleSignInAccount
         val googleSignInAccount: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
 
@@ -68,9 +73,8 @@ class ProfileActivity : AppCompatActivity() {
         updateUI(currentUser, googleSignInAccount)
 
         // Get a list of all entries for that user in the database and count them
-        // TO DO: Change "current_user" to currentUser <-- this should be the unique user ID from google login
         db.collection(COLLECTION_ENTRIES)
-            .whereEqualTo(FIELD_USER_ID, current_user)
+            .whereEqualTo(FIELD_USER_ID, current_user_id)
             .get()
             .addOnSuccessListener { documents ->
                 var numberOfEntires = documents.size()
@@ -80,8 +84,6 @@ class ProfileActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(ContentValues.TAG, "Error getting documents: $exception")
             }
-
-
 
         // Exit button
         val exitButton = findViewById<ImageView>(R.id.cancelButton)

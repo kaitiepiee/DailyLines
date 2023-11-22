@@ -13,6 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -23,6 +25,7 @@ import java.util.Locale
 
 class NewEntryActivity : AppCompatActivity() {
     private val PICK_IMAGE_REQUEST = 1
+    private lateinit var auth: FirebaseAuth
 
     // Declares the db
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -35,13 +38,22 @@ class NewEntryActivity : AppCompatActivity() {
     private val FIELD_ENT_TITLE = "title"
     private val FIELD_ENT_BODY = "body"
     private val FIELD_ENT_IMG = "image"
-    private val current_user = "me"
+    private var current_user_id = ""
 
     private val addToDB = HashMap<String,Any>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppPreferences.applyDarkModeLogic(this, R.layout.create_journal, R.layout.dark_create_journal)
+
+        // After initializing views and Firebase Authentication
+        auth = FirebaseAuth.getInstance()
+        // Check if the user is signed in
+        val currentUser: FirebaseUser? = auth.currentUser
+        if (currentUser != null) {
+            // User is signed in, update the welcome message
+            current_user_id = currentUser.uid
+        }
 
         val dateTextView = findViewById<TextView>(R.id.dateCreated)
         val dayOfWeekTextView = findViewById<TextView>(R.id.dayCreated)
@@ -87,17 +99,15 @@ class NewEntryActivity : AppCompatActivity() {
             this.addToDB[FIELD_ENT_TITLE] = titleString
             this.addToDB[FIELD_ENT_BODY] = bodyString
             this.addToDB[FIELD_DATE] = dateString
-            this.addToDB[FIELD_USER_ID] = this.current_user
+            this.addToDB[FIELD_USER_ID] = this.current_user_id
             db.collection(COLLECTION_ENTRIES)
                 .add(addToDB)
                 .addOnSuccessListener {
                     Log.d(TAG, "Data added")
-                    
                 }
                 .addOnFailureListener {
                     Log.d(TAG, "Data not added")
                 }
-
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

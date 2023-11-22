@@ -41,7 +41,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_horizontal"
             android:text="Daily Lines"
-            android:textSize="28sp" />
+            android:textSize="23sp" />
 
 
         <TextView
@@ -310,6 +310,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
+            android:layout_marginTop="-10dp"
             android:layout_marginBottom="-5dp"
             android:fontFamily="@font/inter"
             android:text="Today I'm Feeling..."
