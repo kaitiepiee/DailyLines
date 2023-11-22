@@ -316,7 +316,7 @@
             android:layout_marginBottom="50dp">
 
             <ImageButton
-                android:id="@+id/worseMood"
+                android:id="@+id/worstMood"
                 android:layout_width="29dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"

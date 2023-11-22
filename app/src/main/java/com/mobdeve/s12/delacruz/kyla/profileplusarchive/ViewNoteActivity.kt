@@ -19,13 +19,10 @@ class ViewNoteActivity : AppCompatActivity() {
         const val titleKey : String = "TITLE_KEY"
         const val bodyKey : String = "BODY_KEY"
         const val dateKey : String = "DATE_KEY"
-//        const val positionKey: String = "POSITION_KEY"
+        //const val positionKey: String = "POSITION_KEY"
     }
 
-//    private lateinit var titleString: String
-//    private lateinit var bodyString: String
     private lateinit var viewBinding: ActivityViewNoteBinding   // Holds the views of the ActivityViewNoteBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +57,5 @@ class ViewNoteActivity : AppCompatActivity() {
         var dateData = toLowerCase(date.dayOfWeek.toString())
         dateData = dateData.replaceFirstChar(Char::titlecase)
         dayCreated.text = dateData
-
-        //        val position = intent.getIntExtra(positionKey, 0)
-        // save as strings
-//        titleString = titleData.toString()
-//        bodyString = bodyData.toString()
     }
 }
