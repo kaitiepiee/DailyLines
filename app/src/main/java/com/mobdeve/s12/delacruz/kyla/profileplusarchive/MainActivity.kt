@@ -344,43 +344,64 @@ class MainActivity : AppCompatActivity(){
                 Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
             }
             .addOnFailureListener { error ->
-                Log.w(TAG, "Error adding document", error)
+                Log.e(TAG, "Error adding document", error)
             }
     }
 
+    // Updates mood from the DB
     private fun updateEmotionInDB(currentUser: String, date: String, newMood: String) {
         val db = FirebaseFirestore.getInstance()
 
-        // Assuming COLLECTION_EMOTIONS is the name of your collection
-        val documentRef = db.collection(COLLECTION_EMOTIONS)
-            .document("$currentUser-$date")
+        val query = db.collection(COLLECTION_EMOTIONS)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .whereEqualTo(FIELD_DATE, date)
 
-        // Update the 'emotion_tracked' field with the new emotion value
-        documentRef.update(FIELD_EMO_TRACKED, newMood)
-            .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot successfully updated!")
+        query.get()
+        .addOnSuccessListener { documents ->
+            if (!documents.isEmpty) {
+                val document = documents.first()
+                document.reference.update(FIELD_EMO_TRACKED, newMood)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+                    }
+                    .addOnFailureListener { error ->
+                        Log.e(TAG, "Error updating document", error)
+                    }
+            } else {
+                Log.e(TAG, "No document found for user $currentUser on date $date")
             }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error updating document", e)
-            }
+        }
+        .addOnFailureListener { error ->
+            Log.e(TAG, "Error getting documents", error)
+        }
     }
 
     // Remove mood from DB
     private fun removeEmotionFromDB(currentUser: String, date: String) {
         val db = FirebaseFirestore.getInstance()
 
-        // Assuming COLLECTION_EMOTIONS is the name of your collection
-        val documentRef = db.collection(COLLECTION_EMOTIONS)
-            .document("$currentUser-$date")
+        val query = db.collection(COLLECTION_EMOTIONS)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .whereEqualTo(FIELD_DATE, date)
 
-        // Delete the document
-        documentRef.delete()
-            .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot successfully deleted!")
+        query.get()
+        .addOnSuccessListener { documents ->
+            if (!documents.isEmpty) {
+                val document = documents.first()
+                document.reference.delete()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+                    }
+                    .addOnFailureListener { error ->
+                        Log.e(TAG, "Error deleting document", error)
+                    }
+            } else {
+                Log.e(TAG, "No document found for user $currentUser on date $date")
             }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error deleting document", e)
-            }
+        }
+        .addOnFailureListener { error ->
+            Log.e(TAG, "Error getting documents", error)
+        }
     }
 
     // Gets the right image src based on the mood
