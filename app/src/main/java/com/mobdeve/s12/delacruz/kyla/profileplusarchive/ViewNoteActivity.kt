@@ -56,9 +56,11 @@ class ViewNoteActivity : AppCompatActivity() {
         if(imageString == ""){
             imageToDisplay.visibility = View.GONE
         } else{
+
+
 //            val imageUri: Uri = Uri.parse(imageString)
 //            imageToDisplay.setImageURI(imageUri)
-            imageToDisplay.visibility = View.VISIBLE
+//            imageToDisplay.visibility = View.VISIBLE
         }
 
         // Get the values for date and display it

@@ -129,16 +129,9 @@ class NewEntryActivity : AppCompatActivity() {
         }
     }
 
-
-//    Toast.makeText(this, "$imageUri", Toast.LENGTH_SHORT).show()
-//    // Save this URI so we can pass it to our database
-//    this.entryImage = imageUri.toString()
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val imgPreview = findViewById<ImageView>(R.id.imgPreview)
-
-//        Toast.makeText(this, "IN HERE  ${imgPreview.image}", Toast.LENGTH_SHORT).show()
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
@@ -156,12 +149,16 @@ class NewEntryActivity : AppCompatActivity() {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
         val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_journal_image")
 
+        this.entryImage = imageRef.toString()
+        Toast.makeText(this, "A ${imageRef.toString()}", Toast.LENGTH_SHORT).show()
+
         imageRef.putFile(imageUri)
             .addOnSuccessListener { taskSnapshot ->
                 // Image uploaded successfully
                 // Get the download URL and store it in the database
                 imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    // Store the downloadUri in the database along with other journal entry details -- we need the uri in here
+                    // Store the downloadUri in the database along with other journal entry details
+                    // Give the image uri to entry image so we can pass it to the db
                 }
             }
             .addOnFailureListener { exception ->
