@@ -1,5 +1,6 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
+import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -20,12 +22,29 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var appPreferences: AppPreferences
     private lateinit var mAuth: FirebaseAuth
+
+    // Declares the db
+    private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    // Creates constants for us to call so we don't have to type everything
+    private val COLLECTION_EMOTIONS = "Emotions"
+    private val COLLECTION_ENTRIES = "Entries"
+    private val FIELD_USER_ID = "user_id"
+    private val FIELD_DATE = "datestring"
+
+    private val FIELD_EMO_TRACKED = "emotion_tracked"
+    private val FIELD_ENT_TITLE = "title"
+    private val FIELD_ENT_BODY = "body"
+    private val FIELD_ENT_IMG = "image"
+
+    private val current_user = "me"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +67,21 @@ class ProfileActivity : AppCompatActivity() {
         // Update UI with the user's information
         updateUI(currentUser, googleSignInAccount)
 
-        // Show total number of entries
-        val entryListSize = intent.getIntExtra("entryListSize", 0)
-        val journalEntriesTextView = findViewById<TextView>(R.id.numJournalEntriesTv)
-        journalEntriesTextView.text = "$entryListSize"
+        // Get a list of all entries for that user in the database and count them
+        // TO DO: Change "current_user" to currentUser <-- this should be the unique user ID from google login
+        db.collection(COLLECTION_ENTRIES)
+            .whereEqualTo(FIELD_USER_ID, current_user)
+            .get()
+            .addOnSuccessListener { documents ->
+                var numberOfEntires = documents.size()
+                val journalEntriesTextView = findViewById<TextView>(R.id.numJournalEntriesTv)
+                journalEntriesTextView.text = "${numberOfEntires}"
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "Error getting documents: $exception")
+            }
+
+
 
         // Exit button
         val exitButton = findViewById<ImageView>(R.id.cancelButton)

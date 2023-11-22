@@ -252,7 +252,8 @@ class MainActivity : AppCompatActivity(){
             recyclerView.layoutManager = LinearLayoutManager(this)
         }
         val exitButton = findViewById<ImageView>(R.id.cancelButton)
-        exitButton.setOnClickListener {            val intent = Intent(this, MainActivity::class.java)
+        exitButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
