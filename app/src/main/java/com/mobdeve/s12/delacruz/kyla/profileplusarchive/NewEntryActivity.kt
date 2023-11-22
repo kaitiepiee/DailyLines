@@ -158,7 +158,7 @@ class NewEntryActivity : AppCompatActivity() {
                 imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                     // Store the downloadUri in the database along with other journal entry details
                     // Give the image uri to entry image so we can pass it to the db
-                    this.entryImage = downloadUri.toString()
+                    this.entryImage = downloadUri.toString() // TO DO : What am I supposed to pass to the DB?
                 }
             }
             .addOnFailureListener { exception ->
