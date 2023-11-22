@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 monTv.visibility = View.VISIBLE
                 monIv.visibility = View.GONE
-                monTv.text = datesOfWeek[1].substring(8, 10) // dd
+                monTv.text = datesOfWeek[0].substring(8, 10) // dd
             }
         }
 
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 tuesTv.visibility = View.VISIBLE
                 tuesIv.visibility = View.GONE
-                tuesTv.text = datesOfWeek[2].substring(8, 10)
+                tuesTv.text = datesOfWeek[1].substring(8, 10)
             }
         }
 
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 wedTv.visibility = View.VISIBLE
                 wedIv.visibility = View.GONE
-                wedTv.text = datesOfWeek[3].substring(8, 10)
+                wedTv.text = datesOfWeek[2].substring(8, 10)
             }
         }
 
@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 thuTv.visibility = View.VISIBLE
                 thuIv.visibility = View.GONE
-                thuTv.text = datesOfWeek[4].substring(8, 10)
+                thuTv.text = datesOfWeek[3].substring(8, 10)
             }
         }
 
@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 friTv.visibility = View.VISIBLE
                 friIv.visibility = View.GONE
-                friTv.text = datesOfWeek[5].substring(8, 10)
+                friTv.text = datesOfWeek[4].substring(8, 10)
             }
         }
 
@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 satTv.visibility = View.VISIBLE
                 satIv.visibility = View.GONE
-                satTv.text = datesOfWeek[6].substring(8, 10)
+                satTv.text = datesOfWeek[5].substring(8, 10)
             }
         }
 
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(){
             else {
                 sunTv.visibility = View.VISIBLE
                 sunIv.visibility = View.GONE
-                sunTv.text = datesOfWeek[0].substring(8, 10)
+                sunTv.text = datesOfWeek[6].substring(8, 10)
             }
         }
 
