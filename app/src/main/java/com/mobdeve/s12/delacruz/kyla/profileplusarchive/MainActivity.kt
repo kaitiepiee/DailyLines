@@ -214,8 +214,7 @@ class MainActivity : AppCompatActivity(){
             }
     }
 
-    private fun setupArchives(/*documents: QuerySnapshot*/) {
-
+    private fun setupArchives() {
         // Check if the entry list is empty
         if(entryList.isEmpty()){
             Toast.makeText(this, "Click any date to view entries", Toast.LENGTH_LONG).show()
@@ -229,14 +228,6 @@ class MainActivity : AppCompatActivity(){
         getAllEntriesOfCurrentUser(current_user_id)
         recyclerView = viewBinding.recyclerView
         calendarView = viewBinding.calendarView
-
-        // On first open of archives page -- this section doesn't work for some reason
-//        val selectedDate = LocalDate.now().toString() // returns "year-month-day"
-//        Toast.makeText(this, "$selectedDate", Toast.LENGTH_SHORT).show()
-//        val currentEntries = this.entryList.filter { it.dateString == selectedDate }
-//        myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
-//        recyclerView.adapter = myAdapter
-//        recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Upon change of date in archive page
         calendarView.setOnDateChangeListener { _, i, i1, i2 ->

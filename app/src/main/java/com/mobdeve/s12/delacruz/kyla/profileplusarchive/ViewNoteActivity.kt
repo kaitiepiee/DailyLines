@@ -25,13 +25,9 @@ class ViewNoteActivity : AppCompatActivity() {
         const val bodyKey : String = "BODY_KEY"
         const val dateKey : String = "DATE_KEY"
         const val imageKey : String = "IMAGE_KEY"
-//        const val positionKey: String = "POSITION_KEY"
     }
 
-//    private lateinit var titleString: String
-//    private lateinit var bodyString: String
     private lateinit var viewBinding: ActivityViewNoteBinding   // Holds the views of the ActivityViewNoteBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,10 +82,5 @@ class ViewNoteActivity : AppCompatActivity() {
         exitButton.setOnClickListener {
             finish()
         }
-
-    //        val position = intent.getIntExtra(positionKey, 0)
-    // save as strings
-//        titleString = titleData.toString()
-//        bodyString = bodyData.toString()
     }
 }

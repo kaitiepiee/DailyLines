@@ -30,7 +30,6 @@ import java.time.format.DateTimeFormatter
 
 
 class ProfileActivity : AppCompatActivity() {
-
     private lateinit var appPreferences: AppPreferences
     private lateinit var mAuth: FirebaseAuth
 
