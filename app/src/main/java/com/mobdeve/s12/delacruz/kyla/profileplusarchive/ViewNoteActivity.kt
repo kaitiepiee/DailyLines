@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.ScrollingMovementMethod
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.common.base.Ascii.toLowerCase
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityViewNoteBinding
@@ -39,6 +41,9 @@ class ViewNoteActivity : AppCompatActivity() {
         val dateCreated = viewBinding.dateCreated
         val dayCreated = viewBinding.dayCreated
 
+        // makes the body scrollable
+        detailBody.movementMethod = ScrollingMovementMethod.getInstance()
+
         // get the values passed by intent that correspond to title, body, and set title in the detail view
         val titleData = intent.getStringExtra(titleKey)
         detailTitle.text = titleData
@@ -61,8 +66,14 @@ class ViewNoteActivity : AppCompatActivity() {
         dateData = dateData.replaceFirstChar(Char::titlecase)
         dayCreated.text = dateData
 
-        //        val position = intent.getIntExtra(positionKey, 0)
-        // save as strings
+        // Closes the current entry and goes back to archives page
+        val exitButton = findViewById<ImageView>(R.id.cancelButton)
+        exitButton.setOnClickListener {
+            finish()
+        }
+
+    //        val position = intent.getIntExtra(positionKey, 0)
+    // save as strings
 //        titleString = titleData.toString()
 //        bodyString = bodyData.toString()
     }
