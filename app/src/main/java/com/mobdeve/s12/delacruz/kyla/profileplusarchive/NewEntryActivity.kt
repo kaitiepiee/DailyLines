@@ -149,8 +149,7 @@ class NewEntryActivity : AppCompatActivity() {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
         val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_journal_image")
 
-        this.entryImage = imageRef.toString()
-        Toast.makeText(this, "A ${imageRef.toString()}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "A ${imageRef.toString()}", Toast.LENGTH_SHORT).show()
 
         imageRef.putFile(imageUri)
             .addOnSuccessListener { taskSnapshot ->
@@ -159,6 +158,7 @@ class NewEntryActivity : AppCompatActivity() {
                 imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                     // Store the downloadUri in the database along with other journal entry details
                     // Give the image uri to entry image so we can pass it to the db
+                    this.entryImage = downloadUri.toString()
                 }
             }
             .addOnFailureListener { exception ->

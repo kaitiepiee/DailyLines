@@ -2,6 +2,7 @@ package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.common.base.Ascii.toLowerCase
+import com.google.firebase.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityViewNoteBinding
 import com.squareup.picasso.Picasso
 import java.time.LocalDate
@@ -56,10 +60,17 @@ class ViewNoteActivity : AppCompatActivity() {
         if(imageString == ""){
             imageToDisplay.visibility = View.GONE
         } else{
-
-
 //            val imageUri: Uri = Uri.parse(imageString)
-//            imageToDisplay.setImageURI(imageUri)
+//            val storageRef: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(imageString!!)
+//            val oneMegabyte = 1024 * 1024
+//
+//            storageRef.getBytes(oneMegabyte.toLong())
+//                .addOnSuccessListener { bytes ->
+//                    var bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+//                    imageToDisplay.setImageBitmap(bm)
+//                    imageToDisplay.visibility = View.VISIBLE
+//                }
+//            imageToDisplay.setImageURI(imageUri)s
 //            imageToDisplay.visibility = View.VISIBLE
         }
 
