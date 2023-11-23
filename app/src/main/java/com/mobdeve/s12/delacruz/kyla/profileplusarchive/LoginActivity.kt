@@ -56,44 +56,9 @@ class LoginActivity : AppCompatActivity() {
         signInButton.setOnClickListener {
             signInWithGoogle()
         }
-
-        // Make "Sign up here" clickable
-        val textSignUp: TextView = findViewById(R.id.textSignUp)
-        makeSignUpClickable(textSignUp)
     }
 
-    private fun makeSignUpClickable(textView: TextView) {
-        // Create a SpannableString from the text of the TextView
-        val spannableString = SpannableString(textView.text)
 
-        // Create a ClickableSpan
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                // Handle click here by opening the SignUpActivity
-                openSignUpActivity(widget)
-            }
-        }
-
-        // Find the start and end indices of the clickable text
-        val clickableText = "Sign up here"
-        val start = spannableString.indexOf(clickableText)
-        val end = start + clickableText.length
-
-        // Apply the ClickableSpan to the clickable text
-        spannableString.setSpan(clickableSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        // Set the modified SpannableString to the TextView
-        textView.text = spannableString
-
-        // Enable ClickableSpan interaction
-        textView.movementMethod = android.text.method.LinkMovementMethod.getInstance()
-    }
-
-    private fun openSignUpActivity(widget: View) {
-        // Create an Intent to start the SignUpActivity
-        val intent = Intent(this, SignUpActivity::class.java)
-        startActivity(intent)
-    }
 
     private val signInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -185,7 +150,6 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 } else {
                     // User does not exist, go to the signup activity
-                    startActivity(Intent(this, SignUpActivity::class.java))
                     finish()
                 }
             }
