@@ -10,8 +10,8 @@
 
         <ImageView
             android:id="@+id/app_logo"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="59dp"
+            android:layout_height="61dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/best_mood_icon" />
@@ -20,8 +20,8 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/app_logo"
             android:text="Title"
             android:textSize="20sp"
@@ -35,7 +35,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/app_logo"
             android:text="This is message"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </RelativeLayout>
 </RelativeLayout>
