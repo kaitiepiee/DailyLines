@@ -20,7 +20,12 @@ class EditProfileActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var appPreferences: AppPreferences
-    private lateinit var currentUser : UserModel
+    private var currentUser = UserModel(
+        email = "",
+        profileName = "",
+        photoUrl = "",
+        user_id = ""
+    )
 
     private val PICK_IMAGE_REQUEST = 1
     private var selectedImageUri: Uri? = null

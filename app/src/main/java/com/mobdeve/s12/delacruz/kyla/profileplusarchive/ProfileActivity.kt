@@ -21,13 +21,20 @@ class ProfileActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var appPreferences: AppPreferences
-    private lateinit var currentUser : UserModel
 
     private val COLLECTION_USERS = "Users"
     private val FIELD_USER_ID = "user_id"
     private val PHOTO_URL = "photoUrl"
     private val EMAIL_ADDR = "email"
     private val PROFILE_NAME = "profileName"
+
+    private var currentUser = UserModel(
+        email = "",
+        profileName = "",
+        photoUrl = "",
+        user_id = ""
+    )
+
 
 //    private lateinit var mAuth: FirebaseAuth
 
@@ -37,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         appPreferences = AppPreferences(this)
 
         // Receiving extras sent from MainActivity/EditProfileActivity
-        val userID = intent.getStringExtra("userID")
+        var userID = intent.getStringExtra("userID")
 
         if (appPreferences.isDarkModeEnabled) {
             setContentView(R.layout.dark_profile_screen)
@@ -56,6 +63,7 @@ class ProfileActivity : AppCompatActivity() {
 
         getUser(userID.toString())
         updateUI()
+
 
         // Show total number of entries
         val entryListSize = intent.getIntExtra("entryListSize", 0)
