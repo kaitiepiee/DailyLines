@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -20,7 +21,6 @@ class EditProfileActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var appPreferences: AppPreferences
-    private lateinit var currentUser : UserModel
 
     private val PICK_IMAGE_REQUEST = 1
     private var selectedImageUri: Uri? = null
@@ -30,6 +30,11 @@ class EditProfileActivity : AppCompatActivity() {
     private val PHOTO_URL = "photoUrl"
     private val EMAIL_ADDR = "email"
     private val PROFILE_NAME = "profileName"
+
+    var email = ""
+    var profileName = ""
+    var photoUrl = ""
+    var user_id = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,58 +50,69 @@ class EditProfileActivity : AppCompatActivity() {
             setContentView(R.layout.edit_profile)
         }
 
+        // Getting elements
         val nameETV = findViewById<EditText>(R.id.nameETV)
         val profilePivIv = findViewById<ShapeableImageView>(R.id.profilePivIv)
-        getUser(userID.toString())
-
-        // For viewing purposes
-        nameETV.hint = currentUser.profileName
-        profilePivIv.setImageURI(Uri.parse(currentUser.photoUrl))
-
-        // Change profile pic button
-        profilePivIv.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK)
-            galleryIntent.type = "image/*"
-            startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
-        }
-
-        // Save button
         val saveButton = findViewById<Button>(R.id.saveButton)
-        saveButton.setOnClickListener {
-            val newName = nameETV.text.toString()
 
-            if (profilePivIv != null && newName.isNotBlank()) {
-                // Update user details
-                uploadImageToFirebase(userID.toString(), selectedImageUri!!)
+        // TODO : getUser(currentUser.email.toString()
+        getUser("kaitlyn_tighe@dlsu.edu.ph") { item ->
+            if(item != null) {
+                // Update UI
+                nameETV.hint = item.profileName
+                Glide.with(this).load(item.photoUrl).into(profilePivIv)
+
+                // Change profile pic button
+                profilePivIv.setOnClickListener {
+                    val galleryIntent = Intent(Intent.ACTION_PICK)
+                    galleryIntent.type = "image/*"
+                    startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
+                }
+
+                // Save changes
+                saveButton.setOnClickListener {
+                    var nameUpdateDone = false
+                    var picUpdateDone = false
+                    val newName = nameETV.text.toString()
+
+                    if(newName.isNotBlank()) {
+                        updateUserName(item.user_id, newName) {
+//                            if (selectedImageUri!! != null) {
+//                                uploadImageToFirebase(item.user_id, selectedImageUri!!)
+//                            }
+
+                            val intent = Intent(this, ProfileActivity::class.java)
+                            startActivity(intent)
+                        }
+                    } else {
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                }
             }
-
-            if(newName.isNotBlank()) {
-                updateUserName(userID.toString(), newName)
-            }
-
-            // Go back Profile Screen
-            val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra("userID", this.currentUser.user_id)
-            startActivity(intent)
         }
     }
 
-    private fun getUser(user_id: String) {
+
+    private fun getUser(email: String, onUserLoaded: (UserModel?) -> Unit) {
         db.collection(COLLECTION_USERS)
-            .whereEqualTo(FIELD_USER_ID, user_id)
+            .whereEqualTo(EMAIL_ADDR, email)
             .get()
             .addOnSuccessListener { documents ->
-                val document = documents.first()
-                val email = document.get(EMAIL_ADDR).toString()
-                val profileName = document.get(PROFILE_NAME).toString()
-                val photoUrl = document.get(PHOTO_URL).toString()
-                val userID = document.get(FIELD_USER_ID).toString()
-
-                this.currentUser = UserModel(email, profileName, photoUrl, userID)
-
+                val userModel: UserModel? = if (documents.isEmpty) null else {
+                    val document = documents.first()
+                    val emailAddr = document.get(EMAIL_ADDR).toString()
+                    val profileName = document.get(PROFILE_NAME).toString()
+                    val photoUrl = document.get(PHOTO_URL).toString()
+                    val userID = document.get(FIELD_USER_ID).toString()
+                    UserModel(emailAddr, profileName, photoUrl, userID)
+                }
+                onUserLoaded(userModel)
             }
-            .addOnFailureListener { error ->
-                Toast.makeText(this, "Error getting documents: $error", Toast.LENGTH_LONG).show()
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+                onUserLoaded(null)
             }
     }
 
@@ -113,7 +129,8 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUserName(userID: String, newName: String) {
+    private fun updateUserName(userID: String, newName: String, callback: () -> Unit) {
+        Log.d(ContentValues.TAG, "AM I IN HERE $newName")
         val db = FirebaseFirestore.getInstance()
 
         val query = db.collection(COLLECTION_USERS)
@@ -123,10 +140,13 @@ class EditProfileActivity : AppCompatActivity() {
         query.get()
         .addOnSuccessListener { documents ->
             if (!documents.isEmpty) {
+                Log.d(ContentValues.TAG, "HOW ABOUT HERE $newName")
                 val document = documents.first()
                 document.reference.update(PROFILE_NAME, newName)
                     .addOnSuccessListener {
+                        profileName = newName
                         Log.d(ContentValues.TAG, "Profile name successfully updated!")
+                        callback.invoke()
                     }
                     .addOnFailureListener { error ->
                         Log.e(ContentValues.TAG, "Error updating document", error)

@@ -313,7 +313,6 @@ class MainActivity : AppCompatActivity(){
                 R.id.nav_profile -> {
                     // Navigate to the profile screen when the "Profile" menu item is selected
                     val intent = Intent(this, ProfileActivity::class.java)
-                    intent.putExtra("userID", current_user)
                     startActivity(intent)
                 }
                 R.id.nav_archive -> {

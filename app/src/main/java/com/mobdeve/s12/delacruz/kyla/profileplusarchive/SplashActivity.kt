@@ -13,7 +13,7 @@ class SplashActivity : AppCompatActivity(){
         Handler().postDelayed({
             // Start the main activity after the splash duration
 
-            // if u want to by pass the login, change SignupActivity to MainActivity
+            // if u want to by pass the login, change SignUpActivity to MainActivity
             val intent = Intent(this@SplashActivity, SignUpActivity::class.java)
             startActivity(intent)
             finish()
