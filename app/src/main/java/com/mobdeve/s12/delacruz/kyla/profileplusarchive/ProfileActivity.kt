@@ -5,32 +5,39 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.Switch
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ProfileActivity : AppCompatActivity() {
 
+    private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
+
     private lateinit var appPreferences: AppPreferences
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var currentUser : UserModel
+
+    private val COLLECTION_USERS = "Users"
+    private val FIELD_USER_ID = "user_id"
+    private val PHOTO_URL = "photoUrl"
+    private val EMAIL_ADDR = "email"
+    private val PROFILE_NAME = "profileName"
+
+//    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // App Preferences for Dark/Normal Mode
         appPreferences = AppPreferences(this)
+
+        // Receiving extras sent from MainActivity/EditProfileActivity
+        val userID = intent.getStringExtra("userID")
 
         if (appPreferences.isDarkModeEnabled) {
             setContentView(R.layout.dark_profile_screen)
@@ -38,15 +45,17 @@ class ProfileActivity : AppCompatActivity() {
             setContentView(R.layout.activity_profile_screen)
         }
 
-        mAuth = FirebaseAuth.getInstance()
-        // Fetch the current user from Firebase Authentication
-        val currentUser: FirebaseUser? = mAuth.currentUser
-
-        // Fetch the GoogleSignInAccount
-        val googleSignInAccount: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
+//        mAuth = FirebaseAuth.getInstance()
+//        // Fetch the current user from Firebase Authentication
+//        val currentUser: FirebaseUser? = mAuth.currentUser
+//
+//        // Fetch the GoogleSignInAccount
+//        val googleSignInAccount: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
 
         // Update UI with the user's information
-        updateUI(currentUser, googleSignInAccount)
+
+        getUser(userID.toString())
+        updateUI()
 
         // Show total number of entries
         val entryListSize = intent.getIntExtra("entryListSize", 0)
@@ -82,6 +91,7 @@ class ProfileActivity : AppCompatActivity() {
 
                 R.id.settings_edit -> {
                     val intent = Intent(this, EditProfileActivity::class.java)
+                    intent.putExtra("userID", this.currentUser.user_id)
                     startActivity(intent)
                     true
                 }
@@ -97,59 +107,51 @@ class ProfileActivity : AppCompatActivity() {
         popup.show()
     }
 
-    private fun updateUI(currentUser: FirebaseUser?, googleSignInAccount: GoogleSignInAccount?) {
-        // Display user information in the UI
-        currentUser?.let {
-            // Update profile picture
-            val profilePictureImageView: ShapeableImageView = findViewById(R.id.profilePivIv)
-            val photoUrl = it.photoUrl
-            if (photoUrl != null) {
-                // Load the profile picture using a library like Picasso or Glide
-                // For simplicity, assuming you have a library like Glide:
-                Glide.with(this).load(photoUrl).into(profilePictureImageView)
-            }
-
-            // Update full name
-            val fullNameTextView: TextView = findViewById(R.id.fullnameTv)
-            val displayName = it.displayName
-            if (!displayName.isNullOrBlank()) {
-                fullNameTextView.text = displayName
-            }
-
-            // Update email address
-            val emailTextView: TextView = findViewById(R.id.emailTv)
-            val email = it.email
-            if (!email.isNullOrBlank()) {
-                emailTextView.text = email
-            }
+    // Display user information in the UI
+    private fun updateUI() {
+        // Update profile picture
+        val profilePictureImageView: ShapeableImageView = findViewById(R.id.profilePivIv)
+        val photoUrl = this.currentUser.photoUrl
+        if (photoUrl != null) {
+            // Load the profile picture using a library like Picasso or Glide
+            // For simplicity, assuming you have a library like Glide:
+            Glide.with(this).load(photoUrl).into(profilePictureImageView)
         }
 
-        // If Firebase user is null, try to fetch information from GoogleSignInAccount
-        if (currentUser == null && googleSignInAccount != null) {
-            // Update profile picture
-            val profilePictureImageView: ShapeableImageView = findViewById(R.id.profilePivIv)
-            val photoUrl = googleSignInAccount.photoUrl
-            if (photoUrl != null) {
-                // Load the profile picture using a library like Picasso or Glide
-                // For simplicity, assuming you have a library like Glide:
-                Glide.with(this).load(photoUrl).into(profilePictureImageView)
-            }
+        // Update full name
+        val fullNameTextView: TextView = findViewById(R.id.fullnameTv)
+        val profileName = this.currentUser.profileName
+        if (profileName.isNotBlank()) {
+            fullNameTextView.text = profileName
+        }
 
-            // Update full name
-            val fullNameTextView: TextView = findViewById(R.id.fullnameTv)
-            val displayName = googleSignInAccount.displayName
-            if (!displayName.isNullOrBlank()) {
-                fullNameTextView.text = displayName
-            }
-
-            // Update email address
-            val emailTextView: TextView = findViewById(R.id.emailTv)
-            val email = googleSignInAccount.email
-            if (!email.isNullOrBlank()) {
-                emailTextView.text = email
-            }
+        // Update email address
+        val emailTextView: TextView = findViewById(R.id.emailTv)
+        val email = this.currentUser.email
+        if (email.isNotBlank()) {
+            emailTextView.text = email
         }
     }
+
+    private fun getUser(user_id: String) {
+        db.collection(COLLECTION_USERS)
+            .whereEqualTo(FIELD_USER_ID, user_id)
+            .get()
+            .addOnSuccessListener { documents ->
+                val document = documents.first()
+                val email = document.get(EMAIL_ADDR).toString()
+                val profileName = document.get(PROFILE_NAME).toString()
+                val photoUrl = document.get(PHOTO_URL).toString()
+                val userID = document.get(FIELD_USER_ID).toString()
+
+                this.currentUser = UserModel(email, profileName, photoUrl, userID)
+
+            }
+            .addOnFailureListener { error ->
+                Toast.makeText(this, "Error getting documents: $error", Toast.LENGTH_LONG).show()
+            }
+    }
+
 
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
