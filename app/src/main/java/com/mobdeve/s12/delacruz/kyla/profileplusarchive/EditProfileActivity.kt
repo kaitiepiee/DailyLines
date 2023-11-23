@@ -20,12 +20,7 @@ class EditProfileActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var appPreferences: AppPreferences
-    private var currentUser = UserModel(
-        email = "",
-        profileName = "",
-        photoUrl = "",
-        user_id = ""
-    )
+    private lateinit var currentUser : UserModel
 
     private val PICK_IMAGE_REQUEST = 1
     private var selectedImageUri: Uri? = null
@@ -72,7 +67,11 @@ class EditProfileActivity : AppCompatActivity() {
 
             if (profilePivIv != null && newName.isNotBlank()) {
                 // Update user details
-                updateUserDB(userID.toString(), newName, selectedImageUri!!)
+                uploadImageToFirebase(userID.toString(), selectedImageUri!!)
+            }
+
+            if(newName.isNotBlank()) {
+                updateUserName(userID.toString(), newName)
             }
 
             // Go back Profile Screen
@@ -114,7 +113,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUserDB(userID: String, newName: String, newImageUri: Uri) {
+    private fun updateUserName(userID: String, newName: String) {
         val db = FirebaseFirestore.getInstance()
 
         val query = db.collection(COLLECTION_USERS)
@@ -128,7 +127,6 @@ class EditProfileActivity : AppCompatActivity() {
                 document.reference.update(PROFILE_NAME, newName)
                     .addOnSuccessListener {
                         Log.d(ContentValues.TAG, "Profile name successfully updated!")
-                        uploadImageToFirebase(userID, newImageUri)
                     }
                     .addOnFailureListener { error ->
                         Log.e(ContentValues.TAG, "Error updating document", error)
@@ -144,7 +142,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun uploadImageToFirebase(userID: String, imageUri: Uri) {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
-        val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_journal_image")
+        val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_profile_image")
         val db = FirebaseFirestore.getInstance()
 
         // Uploading url in firebase
