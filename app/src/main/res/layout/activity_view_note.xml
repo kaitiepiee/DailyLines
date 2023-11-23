@@ -38,7 +38,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="583dp"
+            android:layout_height="584dp"
             android:layout_marginTop="50dp"
             android:background="@drawable/top_curved_border"
             android:orientation="vertical"
@@ -65,57 +65,66 @@
             <!--            </ScrollView>-->
 
             <!-- TODO place in scroll view -->
-            <TextView
-                android:id="@+id/titleTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-
-                android:background="@null"
-                android:fontFamily="@font/inter"
-                android:hint="Title"
-                android:inputType="textMultiLine"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="514dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/bodyTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="268dp"
-                    android:layout_marginTop="25dp"
+                    android:id="@+id/titleTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
 
-                    android:layout_weight="50"
                     android:background="@null"
                     android:fontFamily="@font/inter"
-                    android:hint="Reflection"
+                    android:hint="Title"
                     android:inputType="textMultiLine"
-                    android:lineSpacingExtra="8sp"
-                    android:scrollbars="vertical"
-                    android:textSize="13sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
-            </ScrollView>
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:paddingTop="20dp"
-                android:scrollbarAlwaysDrawVerticalTrack="true">
-
-                <ImageView
-                    android:id="@+id/img"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="250dp"
                     android:layout_weight="50"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="Entry Image"
-                    android:paddingBottom="5dp"
-                    android:scaleType="centerInside" />
-            </ScrollView>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/bodyTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="268dp"
+                        android:layout_marginTop="25dp"
+
+                        android:layout_weight="50"
+                        android:background="@null"
+                        android:fontFamily="@font/inter"
+                        android:hint="Reflection"
+                        android:inputType="textMultiLine"
+                        android:lineSpacingExtra="8sp"
+                        android:scrollbars="vertical"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </ScrollView>
+
+                <ScrollView
+                    android:id="@+id/imgScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_weight="50"
+                    android:paddingTop="20dp"
+                    android:scrollbarAlwaysDrawVerticalTrack="true">
+
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="Entry Image"
+                        android:paddingBottom="5dp"
+                        android:scaleType="centerInside" />
+                </ScrollView>
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

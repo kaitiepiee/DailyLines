@@ -41,6 +41,7 @@ class ViewNoteActivity : AppCompatActivity() {
         val dateCreated = viewBinding.dateCreated
         val dayCreated = viewBinding.dayCreated
         val imageToDisplay = viewBinding.img
+        val imageScrollView = viewBinding.imgScroll
 
         // makes the body scrollable
         detailBody.movementMethod = ScrollingMovementMethod.getInstance()
@@ -54,7 +55,7 @@ class ViewNoteActivity : AppCompatActivity() {
 
         // shows the image from the db in the entry by turning the string into the uri, removes the section if theres no image
         if(imageString == ""){
-            imageToDisplay.visibility = View.GONE
+            imageScrollView.visibility = View.GONE
         } else{
             downloadImage(imageString!!, imageToDisplay)
         }
