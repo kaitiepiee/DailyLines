@@ -27,7 +27,6 @@ class ViewNoteActivity : AppCompatActivity() {
         const val dateKey : String = "DATE_KEY"
         const val imageKey : String = "IMAGE_KEY"
     }
-
     private lateinit var viewBinding: ActivityViewNoteBinding   // Holds the views of the ActivityViewNoteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +97,5 @@ class ViewNoteActivity : AppCompatActivity() {
                 Toast.makeText(this@ViewNoteActivity, e.message, Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 }

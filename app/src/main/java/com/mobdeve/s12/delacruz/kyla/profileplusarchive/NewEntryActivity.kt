@@ -1,11 +1,11 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.content.ContentValues
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -32,13 +32,13 @@ class NewEntryActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
     // Creates constants for us to call so we don't have to type everything
     private val COLLECTION_EMOTIONS = "Emotions"
+    private val FIELD_EMO_TRACKED = "emotion_tracked"
+    private val FIELD_ENT_IMG = "image"
     private val COLLECTION_ENTRIES = "Entries"
     private val FIELD_USER_ID = "user_id"
     private val FIELD_DATE = "datestring"
-    private val FIELD_EMO_TRACKED = "emotion_tracked"
     private val FIELD_ENT_TITLE = "title"
     private val FIELD_ENT_BODY = "body"
-    private val FIELD_ENT_IMG = "image"
     private var current_user_id = ""
 
     private val addToDB = HashMap<String,Any>()
@@ -110,10 +110,10 @@ class NewEntryActivity : AppCompatActivity() {
             db.collection(COLLECTION_ENTRIES)
                 .add(addToDB)
                 .addOnSuccessListener {
-                    Log.d(TAG, "Data added")
+                    Log.d(ContentValues.TAG, "Data added")
                 }
                 .addOnFailureListener {
-                    Log.d(TAG, "Data not added")
+                    Log.d(ContentValues.TAG, "Data not added")
                 }
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

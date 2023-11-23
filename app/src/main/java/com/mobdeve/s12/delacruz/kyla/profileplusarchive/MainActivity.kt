@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -98,35 +97,139 @@ class MainActivity : AppCompatActivity(){
         authorTextView = findViewById(R.id.author)
         RequestManager(this@MainActivity).getAllQuotes(listener)
 
-        // TODO: input moods
-        // Days of the Week
+        // Mini Calendar with Moods
         val currentDate = LocalDate.now()
         val firstDayOfWeek = currentDate.with(DayOfWeek.MONDAY)
-        val dayFormatter = DateTimeFormatter.ofPattern("dd")
-
-        val dayNumbersOfWeek = (0 until 7).map {
+        val dayFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val datesOfWeek = (0 until 7).map {
             val date = firstDayOfWeek.plusDays(it.toLong())
             date.format(dayFormatter)
         }
 
-        val monDayTextView: TextView = findViewById(R.id.monDay)
-        monDayTextView.text = dayNumbersOfWeek[0]
-        val tuesDayTextView: TextView = findViewById(R.id.tuesDay)
-        tuesDayTextView.text = dayNumbersOfWeek[1]
-        val wedDayTextView: TextView = findViewById(R.id.wedDay)
-        wedDayTextView.text = dayNumbersOfWeek[2]
-        val thuDayTextView: TextView = findViewById(R.id.thuDay)
-        thuDayTextView.text = dayNumbersOfWeek[3]
-        val friDayTextView: TextView = findViewById(R.id.friDay)
-        friDayTextView.text = dayNumbersOfWeek[4]
-        val satDayTextView: TextView = findViewById(R.id.satDay)
-        satDayTextView.text = dayNumbersOfWeek[5]
-        val sunDayTextView: TextView = findViewById(R.id.sunDay)
-        sunDayTextView.text = dayNumbersOfWeek[6]
+        // Monday
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[0]) { moodMon ->
+            val monIv: ImageView = findViewById(R.id.monMood)
+            val monTv: TextView = findViewById(R.id.monDay)
+
+            if (moodMon != null) {
+                monTv.visibility = View.GONE
+                monIv.visibility = View.VISIBLE
+                monIv.setImageResource(getMoodSrc(moodMon.emotion_tracked))
+            }
+            else {
+                monTv.visibility = View.VISIBLE
+                monIv.visibility = View.GONE
+                monTv.text = datesOfWeek[0].substring(8, 10) // dd
+            }
+        }
+
+        // Tues
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[1]) { moodTues ->
+            val tuesIv: ImageView = findViewById(R.id.tuesMood)
+            val tuesTv: TextView = findViewById(R.id.tuesDay)
+
+            if (moodTues != null) {
+                tuesTv.visibility = View.GONE
+                tuesIv.visibility = View.VISIBLE
+                tuesIv.setImageResource(getMoodSrc(moodTues.emotion_tracked))
+            }
+            else {
+                tuesTv.visibility = View.VISIBLE
+                tuesIv.visibility = View.GONE
+                tuesTv.text = datesOfWeek[1].substring(8, 10)
+            }
+        }
+
+        // Wednesday
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[2]) { moodWed ->
+            val wedIv: ImageView = findViewById(R.id.wedMood)
+            val wedTv: TextView = findViewById(R.id.wedDay)
+
+            if (moodWed != null) {
+                wedTv.visibility = View.GONE
+                wedIv.visibility = View.VISIBLE
+                wedIv.setImageResource(getMoodSrc(moodWed.emotion_tracked))
+            }
+            else {
+                wedTv.visibility = View.VISIBLE
+                wedIv.visibility = View.GONE
+                wedTv.text = datesOfWeek[2].substring(8, 10)
+            }
+        }
+
+        // Thursday
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[3]) { moodThu ->
+            val thuIv: ImageView = findViewById(R.id.thuMood)
+            val thuTv: TextView = findViewById(R.id.thuDay)
+
+            if (moodThu != null) {
+                thuTv.visibility = View.GONE
+                thuIv.visibility = View.VISIBLE
+                thuIv.setImageResource(getMoodSrc(moodThu.emotion_tracked))
+            }
+            else {
+                thuTv.visibility = View.VISIBLE
+                thuIv.visibility = View.GONE
+                thuTv.text = datesOfWeek[3].substring(8, 10)
+            }
+        }
+
+        // Friday
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[4]) { moodFri ->
+            val friIv: ImageView = findViewById(R.id.friMood)
+            val friTv: TextView = findViewById(R.id.friDay)
+
+            if (moodFri != null) {
+                friTv.visibility = View.GONE
+                friIv.visibility = View.VISIBLE
+                friIv.setImageResource(getMoodSrc(moodFri.emotion_tracked))
+            }
+            else {
+                friTv.visibility = View.VISIBLE
+                friIv.visibility = View.GONE
+                friTv.text = datesOfWeek[4].substring(8, 10)
+            }
+        }
+
+        // Saturday
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[5]) { moodSat ->
+            val satIv: ImageView = findViewById(R.id.satMood)
+            val satTv: TextView = findViewById(R.id.satDay)
+
+            if (moodSat != null) {
+                satTv.visibility = View.GONE
+                satIv.visibility = View.VISIBLE
+                satIv.setImageResource(getMoodSrc(moodSat.emotion_tracked))
+            }
+            else {
+                satTv.visibility = View.VISIBLE
+                satIv.visibility = View.GONE
+                satTv.text = datesOfWeek[5].substring(8, 10)
+            }
+        }
+
+        // Sunday
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[6]) { moodSun ->
+            val sunIv: ImageView = findViewById(R.id.sunMood)
+            val sunTv: TextView = findViewById(R.id.sunDay)
+
+            if (moodSun != null) {
+                sunTv.visibility = View.GONE
+                sunIv.visibility = View.VISIBLE
+                sunIv.setImageResource(getMoodSrc(moodSun.emotion_tracked))
+            }
+            else {
+                sunTv.visibility = View.VISIBLE
+                sunIv.visibility = View.GONE
+                sunTv.text = datesOfWeek[6].substring(8, 10)
+            }
+        }
+
 
         // For mood buttons
-        fun onMoodButtonClick(view: View) {
-            val moodTag = view.tag.toString()
+        fun onMoodButtonClick(view: View, mood: String) {
+            val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
             val parentLayout = view.parent as LinearLayout
             for (i in 0 until parentLayout.childCount) {
                 val childView = parentLayout.getChildAt(i)
@@ -136,27 +239,43 @@ class MainActivity : AppCompatActivity(){
                     childView.setBackgroundResource(android.R.color.transparent)
                 }
             }
+
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 view.setBackgroundResource(R.drawable.glow_background)
-                Toast.makeText(this, "Selected mood: $moodTag", Toast.LENGTH_SHORT).show()
+                getEmotionOfCurrentUserAndDate(current_user_id, currentDate) { item ->
+                    if (item != null) {
+                        updateEmotionInDB(current_user_id, currentDate, mood)
+                    }
+                    else {
+                        val newMood = EmotionModel(mood, currentDate, current_user_id)
+                        addEmotionToDB(newMood)
+                    }
+                }
             }
             else {
                 view.setBackgroundResource(android.R.color.transparent)
-                Toast.makeText(this, "Deselected mood: $moodTag", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Deselected mood: $mood", Toast.LENGTH_SHORT).show()
+
+                // remove from the database
+                getEmotionOfCurrentUserAndDate(current_user_id, currentDate) { item ->
+                    if (item != null) {
+                        removeEmotionFromDB(current_user_id, currentDate)
+                    }
+                }
             }
         }
 
-        val worseMoodButton: ImageButton = findViewById(R.id.worseMood)
-        worseMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        val worstMoodButton: ImageButton = findViewById(R.id.worstMood)
+        worstMoodButton.setOnClickListener { onMoodButtonClick(it, "worst") }
         val badMoodButton: ImageButton = findViewById(R.id.badMood)
-        badMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        badMoodButton.setOnClickListener { onMoodButtonClick(it, "bad") }
         val neutralMoodButton: ImageButton = findViewById(R.id.neutralMood)
-        neutralMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        neutralMoodButton.setOnClickListener { onMoodButtonClick(it, "neutral") }
         val goodMoodButton: ImageButton = findViewById(R.id.goodMood)
-        goodMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        goodMoodButton.setOnClickListener { onMoodButtonClick(it, "good") }
         val bestMoodButton: ImageButton = findViewById(R.id.bestMood)
-        bestMoodButton.setOnClickListener { onMoodButtonClick(it) }
+        bestMoodButton.setOnClickListener { onMoodButtonClick(it,"best") }
 
         // Create an Intent to navigate to the create_journal.xml layout
         val submitEntryButton = findViewById<Button>(R.id.submitEntryButton)
@@ -187,11 +306,31 @@ class MainActivity : AppCompatActivity(){
             true
         }
     }
+    // Gets emotion under the users name and on a specific date from DB
+    private fun getEmotionOfCurrentUserAndDate(currentUser: String, date: String, onEmotionLoaded: (EmotionModel?) -> Unit) {
+        db.collection(COLLECTION_EMOTIONS)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .whereEqualTo(FIELD_DATE, date)
+            .get()
+            .addOnSuccessListener { documents ->
+                val emotionModel: EmotionModel? = if (documents.isEmpty) null else {
+                    val document = documents.first()
+                    val emotionSubmitted = document.get(FIELD_EMO_TRACKED).toString()
+                    val emotionUserId = document.get(FIELD_USER_ID).toString()
+                    val emotionDate = document.get(FIELD_DATE).toString()
+                    EmotionModel(emotionSubmitted, emotionDate, emotionUserId)
+                }
+                onEmotionLoaded(emotionModel)
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "Error getting documents: $exception")
+            }
+    }
 
     // Gets entries under the users name from DB
-    private fun getAllEntriesOfCurrentUser(currentUserId : String){
+    private fun getAllEntriesOfCurrentUser(currentUser : String, entryList: ArrayList<EntryModel> = this.entryList){
         db.collection(COLLECTION_ENTRIES)
-            .whereEqualTo(FIELD_USER_ID, currentUserId)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
             .get()
             .addOnSuccessListener { documents ->
                 for(document in documents){
@@ -199,7 +338,7 @@ class MainActivity : AppCompatActivity(){
                     var entryBody = document.get(FIELD_ENT_BODY).toString()
                     var entryDate = document.get(FIELD_DATE).toString()
                     var entryImage = document.get(FIELD_ENT_IMG).toString()
-                    this.entryList.add(
+                    entryList.add(
                         EntryModel(
                             entryTitle,
                             entryBody,
@@ -219,7 +358,6 @@ class MainActivity : AppCompatActivity(){
         if(entryList.isEmpty()){
             Toast.makeText(this, "Click any date to view entries", Toast.LENGTH_LONG).show()
         }
-
         // Inflate the Archives layout
         this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
         setContentView(this.viewBinding.root)
@@ -244,6 +382,92 @@ class MainActivity : AppCompatActivity(){
         exitButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+//        Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+//                onEmotionLoaded(null)
+//            }
+
+    // Add new mood to the DB
+    private fun addEmotionToDB(emotionModel: EmotionModel) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection(COLLECTION_EMOTIONS)
+            .add(emotionModel)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Error adding document", error)
+            }
+    }
+
+    // Updates mood from the DB
+    private fun updateEmotionInDB(currentUser: String, date: String, newMood: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        val query = db.collection(COLLECTION_EMOTIONS)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .whereEqualTo(FIELD_DATE, date)
+
+        query.get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.first()
+                    document.reference.update(FIELD_EMO_TRACKED, newMood)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener { error ->
+                            Log.e(TAG, "Error updating document", error)
+                        }
+                } else {
+                    Log.e(TAG, "No document found for user $currentUser on date $date")
+                }
+            }
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Error getting documents", error)
+            }
+    }
+
+    // Remove mood from DB
+    private fun removeEmotionFromDB(currentUser: String, date: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        val query = db.collection(COLLECTION_EMOTIONS)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .whereEqualTo(FIELD_DATE, date)
+
+        query.get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.first()
+                    document.reference.delete()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener { error ->
+                            Log.e(TAG, "Error deleting document", error)
+                        }
+                } else {
+                    Log.e(TAG, "No document found for user $currentUser on date $date")
+                }
+            }
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Error getting documents", error)
+            }
+    }
+
+    // Gets the right image src based on the mood
+    private fun getMoodSrc(mood: String): Int {
+        return when (mood) {
+            "best" -> R.drawable.best_mood_icon
+            "good" -> R.drawable.good_mood_icon
+            "neutral" -> R.drawable.neutral_mood_icon
+            "bad" -> R.drawable.bad_mood_icon
+            "worst" -> R.drawable.worst_mood_icon
+            else -> 0
         }
     }
 
