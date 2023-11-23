@@ -101,8 +101,6 @@ class NewEntryActivity : AppCompatActivity() {
             val preDateString = SimpleDateFormat("yyyy-M-dd", Locale.getDefault())
             var dateString = preDateString.format(Date())
 
-//            Toast.makeText(this, "${this.entryImage}", Toast.LENGTH_SHORT).show()
-
             // Pass these to the database
             this.addToDB[FIELD_ENT_TITLE] = titleString
             this.addToDB[FIELD_ENT_BODY] = bodyString
@@ -132,10 +130,8 @@ class NewEntryActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val imgPreview = findViewById<ImageView>(R.id.imgPreview)
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
-
             // Upload the image to Firebase Storage
             uploadImageToFirebase(imageUri)
             // Load the image into the preview ImageView
@@ -149,8 +145,7 @@ class NewEntryActivity : AppCompatActivity() {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
         val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_journal_image")
 
-//        Toast.makeText(this, "A ${imageRef.toString()}", Toast.LENGTH_SHORT).show()
-        this.entryImage = "images/${System.currentTimeMillis()}_journal_image" // TO DO : What am I supposed to pass to the DB?
+        this.entryImage = "${System.currentTimeMillis()}_journal_image"
 
         imageRef.putFile(imageUri)
             .addOnSuccessListener { taskSnapshot ->
@@ -159,7 +154,6 @@ class NewEntryActivity : AppCompatActivity() {
                 imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                     // Store the downloadUri in the database along with other journal entry details
                     // Give the image uri to entry image so we can pass it to the db
-//                    this.entryImage = downloadUri.toString() // TO DO : What am I supposed to pass to the DB?
                 }
             }
             .addOnFailureListener { exception ->

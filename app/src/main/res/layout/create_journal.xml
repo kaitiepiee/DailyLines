@@ -90,7 +90,7 @@
             <EditText
                 android:id="@+id/bodyTv"
                 android:layout_width="match_parent"
-                android:layout_height="333dp"
+                android:layout_height="255dp"
                 android:layout_marginTop="25dp"
 
                 android:background="@null"
@@ -144,11 +144,11 @@
 
                 <ImageView
                     android:id="@+id/imgPreview"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="169dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="99dp" />
+                    android:layout_marginBottom="110dp"
+                    android:scaleType="fitStart" />
             </RelativeLayout>
 
 

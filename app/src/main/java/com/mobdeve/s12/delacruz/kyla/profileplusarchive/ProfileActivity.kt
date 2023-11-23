@@ -86,41 +86,38 @@ class ProfileActivity : AppCompatActivity() {
                 journalEntriesTextView.text = "$numberOfEntires"
 
                 // counts number of days in streak and displays number
-                // TO DO: this whole thing
                 var numStreak = 0
+                if(!documents.isEmpty){
+                    // get list of the dates of all entries made by the user
+                    var listOfDates = arrayOf<String>()
+                    for(document in documents){
+                        listOfDates += document.get(FIELD_DATE).toString()
+                    }
 
-                // get list of the dates of all entries made by the user
-                var listOfDates = arrayOf<String>()
-                for(document in documents){
-                    listOfDates += document.get(FIELD_DATE).toString()
-                }
+                    // sort the dates such that the first is the most recent date
+                    listOfDates.sortDescending()
 
-                // sort the dates such that the first is the most recent date
-                listOfDates.sortDescending()
+                    // get current date
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val current = LocalDateTime.now().format(formatter)
 
-                // get current date
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                val current = LocalDateTime.now().format(formatter)
-
-                // check if they made an entry today (if none, no streak; if yes, calculate the streak)
-                if(listOfDates[0] != current){
-                    numStreak = 0
-                }else{
-                    var latestDate = LocalDate.parse(current)
-                    var counter = 0
-                    for(date in listOfDates){
-                        var parsedDate = LocalDate.parse(date)
-                        var dateMinus1 = latestDate.minusDays(1)
-                        // if the first date is the current date, increment counter once
-                        if(counter == 0 && latestDate == parsedDate){ numStreak++ }
-                        counter++
-                        // for all succeeding, only increment counter if the parsed date is exactly 1 day after the previous date
-                        if(parsedDate == dateMinus1){
-                            numStreak++
+                    // check if they made an entry today (if none, no streak; if yes, calculate the streak)
+                    if(listOfDates[0] == current){
+                        var latestDate = LocalDate.parse(current)
+                        for((counter, date) in listOfDates.withIndex()){
+                            var parsedDate = LocalDate.parse(date)
+                            var dateMinus1 = latestDate.minusDays(1)
+                            // if the first date is the current date, increment counter once
+                            if(counter == 0 && latestDate == parsedDate){ numStreak++ }
+                            // for all succeeding, only increment counter if the parsed date is exactly 1 day after the previous date
+                            if(parsedDate == dateMinus1){
+                                numStreak++
+                            }
+                            latestDate = parsedDate
                         }
-                        latestDate = parsedDate
                     }
                 }
+
                 val streakTextView = findViewById<TextView>(R.id.longestStreakTv)
                 streakTextView.text = "$numStreak"
             }
@@ -146,7 +143,6 @@ class ProfileActivity : AppCompatActivity() {
     private fun showSettings(view: View) {
         val popup = PopupMenu(this, view)
         popup.menuInflater.inflate(R.menu.settings_menu, popup.menu)
-
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.settings_mode -> {
@@ -154,18 +150,15 @@ class ProfileActivity : AppCompatActivity() {
                     recreate() // Recreate the activity to apply the new theme
                     true
                 }
-
                 R.id.settings_edit -> {
                     val intent = Intent(this, EditProfileActivity::class.java)
                     startActivity(intent)
                     true
                 }
-
                 R.id.settings_logout -> {
                     signOut()
                     true
                 }
-
                 else -> false
             }
         }

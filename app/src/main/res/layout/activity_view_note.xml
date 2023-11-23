@@ -78,9 +78,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="439dp"
+                android:layout_height="250dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -98,17 +98,24 @@
                     android:scrollbars="vertical"
                     android:textSize="13sp"
                     android:textStyle="bold" />
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:paddingTop="20dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true">
 
                 <ImageView
                     android:id="@+id/img"
                     android:layout_width="match_parent"
-                    android:layout_height="186dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:paddingTop="20dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="Entry Image"
                     android:paddingBottom="5dp"
-                    app:srcCompat="@drawable/temp_pfp" />
-
-            </LinearLayout>
+                    android:scaleType="centerInside" />
+            </ScrollView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -129,9 +136,11 @@
                     app:layout_constraintVertical_bias="0.571" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </LinearLayout>
+
+
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

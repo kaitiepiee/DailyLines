@@ -1,28 +1,24 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.google.common.base.Ascii.toLowerCase
 import com.google.firebase.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.storage
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityViewNoteBinding
-import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
 
 class ViewNoteActivity : AppCompatActivity() {
     companion object {
@@ -61,19 +57,7 @@ class ViewNoteActivity : AppCompatActivity() {
         if(imageString == ""){
             imageToDisplay.visibility = View.GONE
         } else{
-////            val imageUri: Uri = Uri.parse(imageString)
-//            val storageRef: StorageReference = FirebaseStorage.getInstance().getReference(imageString!!)
-//            Glide.with(this).load(storageRef).into(imageToDisplay)
-//            val oneMegabyte = 1024 * 1024
-//
-//            storageRef.getBytes(oneMegabyte.toLong())
-//                .addOnSuccessListener { bytes ->
-//                    var bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-//                    imageToDisplay.setImageBitmap(bm)
-//                    imageToDisplay.visibility = View.VISIBLE
-//                }
-////            imageToDisplay.setImageURI(imageUri)s
-////            imageToDisplay.visibility = View.VISIBLE
+            downloadImage(imageString!!, imageToDisplay)
         }
 
         // Get the values for date and display it
@@ -97,5 +81,23 @@ class ViewNoteActivity : AppCompatActivity() {
         exitButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun downloadImage(filename: String, imageToDisplay: ImageView) = CoroutineScope(Dispatchers.IO).launch{
+        try {
+            val imageRef = Firebase.storage.reference
+            val maxDownloadSize = 5L * 1024 * 1024
+            val bytes = imageRef.child("images/$filename").getBytes(maxDownloadSize).await()
+            val bmp = BitmapFactory.decodeByteArray(bytes,0, bytes.size)
+            withContext(Dispatchers.Main){
+                imageToDisplay.setImageBitmap(bmp)
+            }
+        }
+        catch (e : Exception) {
+            withContext(Dispatchers.Main){
+                Toast.makeText(this@ViewNoteActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 }
