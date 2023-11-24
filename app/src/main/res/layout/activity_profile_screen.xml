@@ -187,160 +187,7 @@
             app:layout_constraintStart_toStartOf="@+id/myStatisticsTv"
             app:layout_constraintTop_toBottomOf="@+id/myStatisticsTv" />
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewGraph"
-            android:layout_width="320dp"
-            android:layout_height="205dp"
-            android:elevation="10dp"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/myStatisticsTv">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-
-                <org.eazegraph.lib.charts.PieChart
-                    android:id="@+id/piechart"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_weight="1"
-                    android:padding="6dp"
-
-                    />
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical">
-
-                        <!--View to display the yellow color icon-->
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/best_mood" />
-
-                        <!--Text view to display R -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="best mood" />
-
-                    </LinearLayout>
-
-                    <!--Linear layout to display Python-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="19dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="5dp">
-
-                        <!--View to display the green color icon-->
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/good_mood" />
-
-                        <!--Text view to display python text -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="good mood" />
-
-                    </LinearLayout>
-
-                    <!--Linear layout to display C++-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="5dp">
-
-                        <!--View to display the red color icon-->
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/neutral_mood" />
-
-                        <!--Text view to display C++ text -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="neutral mood" />
-
-                    </LinearLayout>
-
-                    <!--Linear layout to display Java-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="17dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="5dp">
-
-                        <!--View to display the blue color icon-->
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/bad_mood" />
-
-                        <!--Text view to display Java text -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="bad mood" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="19dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="5dp">
-
-                        <View
-                            android:layout_width="15dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/neutral_mood" />
-
-                        <!--Text view to display Java text -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="worst mood" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    <ImageButton
+        <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="32dp"
             android:layout_height="31dp"
@@ -351,6 +198,20 @@
             app:layout_constraintStart_toEndOf="@+id/lastSevenDaysTv"
             app:layout_constraintTop_toTopOf="@+id/profileContianerSIv"
             app:srcCompat="@drawable/dropdown" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/tempSpaceCl"
+            android:layout_width="0dp"
+            android:layout_height="236dp"
+            android:layout_marginTop="28dp"
+            android:padding="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+            app:layout_constraintEnd_toEndOf="@+id/textView11"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/lastSevenDaysTv"
+            app:layout_constraintVertical_bias="0.0"
+            app:strokeColor="#292929"
+            app:strokeWidth="1dp"></com.google.android.material.imageview.ShapeableImageView>
 
         <ImageView
             android:id="@+id/cancelButton"
