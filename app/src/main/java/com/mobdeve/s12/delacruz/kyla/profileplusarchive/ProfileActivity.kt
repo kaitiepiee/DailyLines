@@ -63,7 +63,6 @@ abstract class ProfileActivity(
         } else {
             setContentView(R.layout.activity_profile_screen)
         }
-
         // Initialize views
         pieChart = findViewById(R.id.piechart)
         bestMood = findViewById(R.id.bestMood)
