@@ -85,19 +85,19 @@ class MainActivity : AppCompatActivity(){
         auth = FirebaseAuth.getInstance()
 
         // Get token for FCM
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { token: String ->
-            if (!TextUtils.isEmpty(token)) {
-                Log.d(TAG, "retrieve token successful : $token")
-            } else {
-                Log.w(TAG, "token should not be null...")
-            }
-        }.addOnFailureListener { e: Exception? -> }.addOnCanceledListener {}
-            .addOnCompleteListener { task: Task<String> ->
-                Log.v(
-                    TAG,
-                    "This is the token : " + task.result
-                )
-            }
+//        FirebaseMessaging.getInstance().token.addOnSuccessListener { token: String ->
+//            if (!TextUtils.isEmpty(token)) {
+//                Log.d(TAG, "retrieve token successful : $token")
+//            } else {
+//                Log.w(TAG, "token should not be null...")
+//            }
+//        }.addOnFailureListener { e: Exception? -> }.addOnCanceledListener {}
+//            .addOnCompleteListener { task: Task<String> ->
+//                Log.v(
+//                    TAG,
+//                    "This is the token : " + task.result
+//                )
+//            }
         // Check if the user is signed in
         val currentUser: FirebaseUser? = auth.currentUser
         if (currentUser != null) {

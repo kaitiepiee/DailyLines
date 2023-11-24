@@ -1,35 +1,39 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import org.eazegraph.lib.charts.PieChart
+import org.eazegraph.lib.models.PieModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class ProfileActivity : AppCompatActivity() {
+abstract class ProfileActivity(
+    private var bestMood: TextView?,
+    private var goodMood: TextView?,
+    private var neutralMood: TextView?,
+    private var badMood: TextView?,
+    private var worstMood: TextView?,
+    private var pieChart: PieChart?
+) : AppCompatActivity() {
     private lateinit var appPreferences: AppPreferences
     private lateinit var mAuth: FirebaseAuth
 
@@ -59,6 +63,14 @@ class ProfileActivity : AppCompatActivity() {
         } else {
             setContentView(R.layout.activity_profile_screen)
         }
+
+        // Initialize views
+        pieChart = findViewById(R.id.piechart)
+        bestMood = findViewById(R.id.bestMood)
+        goodMood = findViewById(R.id.goodMood)
+        neutralMood = findViewById(R.id.neutralMood)
+        badMood = findViewById(R.id.badMood)
+        worstMood = findViewById(R.id.worstMood)
 
         mAuth = FirebaseAuth.getInstance()
         // Fetch the current user from Firebase Authentication
@@ -138,6 +150,9 @@ class ProfileActivity : AppCompatActivity() {
             showSettings(it)
         }
 
+        // Creating a method setData()
+        // to set the text in text view and pie chart
+        setData();
     }
 
     private fun showSettings(view: View) {
@@ -217,6 +232,53 @@ class ProfileActivity : AppCompatActivity() {
                 emailTextView.text = email
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setData() {
+
+        // Set the percentage of language used
+        bestMood?.text = 40.toString()
+        goodMood?.text = 30.toString()
+        neutralMood?.text = 5.toString()
+        badMood?.text = 10.toString()
+        worstMood?.text = 15.toString()
+
+
+        // Set the data and color to the pie chart
+        pieChart?.addPieSlice(
+            PieModel(
+                "best mood", bestMood?.text.toString().toInt().toFloat(),
+                Color.parseColor("#FFA726")
+            )
+        )
+        pieChart?.addPieSlice(
+            PieModel(
+                "good mood", goodMood?.text.toString().toInt().toFloat(),
+                Color.parseColor("#66BB6A")
+            )
+        )
+        pieChart?.addPieSlice(
+            PieModel(
+                "neutral mood", neutralMood?.text.toString().toInt().toFloat(),
+                Color.parseColor("#EF5350")
+            )
+        )
+        pieChart?.addPieSlice(
+            PieModel(
+                "bad mood", badMood?.text.toString().toInt().toFloat(),
+                Color.parseColor("#29B6F6")
+            )
+        )
+        pieChart?.addPieSlice(
+            PieModel(
+                "worst mood", worstMood?.text.toString().toInt().toFloat(),
+                Color.parseColor("#29B6F6")
+            )
+        )
+
+        // To animate the pie chart
+        pieChart?.startAnimation()
     }
 
     private fun signOut() {
