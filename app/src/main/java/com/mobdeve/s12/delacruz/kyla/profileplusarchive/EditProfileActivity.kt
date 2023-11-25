@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -21,6 +23,7 @@ class EditProfileActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var appPreferences: AppPreferences
+    private lateinit var mAuth: FirebaseAuth
 
     private val PICK_IMAGE_REQUEST = 1
     private var selectedImageUri: Uri? = null
@@ -55,43 +58,52 @@ class EditProfileActivity : AppCompatActivity() {
         val profilePivIv = findViewById<ShapeableImageView>(R.id.profilePivIv)
         val saveButton = findViewById<Button>(R.id.saveButton)
 
+        mAuth = FirebaseAuth.getInstance()
+        // Fetch the current user from Firebase Authentication
+        val currentUser: FirebaseUser? = mAuth.currentUser
+
         // TODO : getUser(currentUser.email.toString()
-        getUser("kaitlyn_tighe@dlsu.edu.ph") { item ->
-            if(item != null) {
-                // Update UI
-                nameETV.hint = item.profileName
-                Glide.with(this).load(item.photoUrl).into(profilePivIv)
+        if (currentUser != null) {
+            getUser(currentUser.email.toString()) { item ->
+                if(item != null) {
+                    // Update UI
+                    nameETV.hint = item.profileName
+                    Glide.with(this).load(item.photoUrl).into(profilePivIv)
 
-                // Change profile pic button
-                profilePivIv.setOnClickListener {
-                    val galleryIntent = Intent(Intent.ACTION_PICK)
-                    galleryIntent.type = "image/*"
-                    startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
-                }
+                    // Change profile pic button
+                    profilePivIv.setOnClickListener {
+                        val galleryIntent = Intent(Intent.ACTION_PICK)
+                        galleryIntent.type = "image/*"
+                        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
+                    }
 
-                // Save changes
-                saveButton.setOnClickListener {
-                    val newName = nameETV.text.toString()
-                    var nameIsDone = false
-                    var picIsDone = false
+                    // Save changes
+                    saveButton.setOnClickListener {
+                        val newName = nameETV.text.toString()
+                        var nameIsDone = false
+                        var picIsDone = false
 
-                    if(newName.isNotBlank()) {
-                        updateUserName(item.user_id, newName) {
+                        if(newName.isNotBlank()) {
+                            updateUserName(item.user_id, newName) {
+                                nameIsDone = true
+                            }
+                        } else {
                             nameIsDone = true
                         }
-                    } else {
-                        nameIsDone = true
-                    }
 
-                    if(selectedImageUri != null) {
-                        uploadImageToFirebase(item.user_id, selectedImageUri!!)
-                        picIsDone = true
-                    } else {
-                        picIsDone = true
-                    }
+                        if(selectedImageUri != null) {
+                            uploadImageToFirebase(item.user_id, selectedImageUri!!)
+                            picIsDone = true
+                        } else {
+                            picIsDone = true
+                        }
 
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
+                        if(nameIsDone && picIsDone){
+                            val intent = Intent(this, ProfileActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                    }
                 }
             }
         }
