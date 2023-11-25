@@ -1,10 +1,11 @@
 package com.mobdeve.s12.delacruz.kyla.profileplusarchive
 
 import android.app.Activity
-import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.content.ContentValues
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -13,6 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -23,6 +26,7 @@ import java.util.Locale
 
 class NewEntryActivity : AppCompatActivity() {
     private val PICK_IMAGE_REQUEST = 1
+    private lateinit var auth: FirebaseAuth
 
     // Declares the db
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -35,13 +39,23 @@ class NewEntryActivity : AppCompatActivity() {
     private val FIELD_DATE = "datestring"
     private val FIELD_ENT_TITLE = "title"
     private val FIELD_ENT_BODY = "body"
-    private val current_user = "me"
+    private var current_user_id = ""
 
     private val addToDB = HashMap<String,Any>()
+    private var entryImage = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppPreferences.applyDarkModeLogic(this, R.layout.create_journal, R.layout.dark_create_journal)
+
+        // After initializing views and Firebase Authentication
+        auth = FirebaseAuth.getInstance()
+        // Check if the user is signed in
+        val currentUser: FirebaseUser? = auth.currentUser
+        if (currentUser != null) {
+            // User is signed in, update the welcome message
+            current_user_id = currentUser.uid
+        }
 
         val dateTextView = findViewById<TextView>(R.id.dateCreated)
         val dayOfWeekTextView = findViewById<TextView>(R.id.dayCreated)
@@ -68,16 +82,20 @@ class NewEntryActivity : AppCompatActivity() {
             startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
         }
 
-        // Submit Button
-        // TODO: Add submission to database -- MISSING IMAGE !!!!!!
+        // access the title and body text views
+        val titleTextView = findViewById<TextView>(R.id.titleTv)
+        val bodyTextView = findViewById<TextView>(R.id.bodyTv)
+
+        // Submit Button -- adds submission to our database
         val submitEntryButton = findViewById<Button>(R.id.submitButton)
         submitEntryButton.setOnClickListener {
 
             // Get the values for title and body
-            val titleTextView = findViewById<TextView>(R.id.titleTv)
-            val bodyTextView = findViewById<TextView>(R.id.bodyTv)
             var titleString = titleTextView.text.toString()
             var bodyString = bodyTextView.text.toString()
+
+            // Makes the body scrollable
+            bodyTextView.movementMethod = ScrollingMovementMethod.getInstance()
 
             // Get the current date and format it into appropriate datestring
             val preDateString = SimpleDateFormat("yyyy-M-dd", Locale.getDefault())
@@ -87,7 +105,8 @@ class NewEntryActivity : AppCompatActivity() {
             this.addToDB[FIELD_ENT_TITLE] = titleString
             this.addToDB[FIELD_ENT_BODY] = bodyString
             this.addToDB[FIELD_DATE] = dateString
-            this.addToDB[FIELD_USER_ID] = this.current_user
+            this.addToDB[FIELD_USER_ID] = this.current_user_id
+            this.addToDB[FIELD_ENT_IMG] = this.entryImage
             db.collection(COLLECTION_ENTRIES)
                 .add(addToDB)
                 .addOnSuccessListener {
@@ -96,7 +115,6 @@ class NewEntryActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Log.d(ContentValues.TAG, "Data not added")
                 }
-
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -109,14 +127,11 @@ class NewEntryActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val imgPreview = findViewById<ImageView>(R.id.imgPreview)
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
-
             // Upload the image to Firebase Storage
             uploadImageToFirebase(imageUri)
             // Load the image into the preview ImageView
@@ -130,12 +145,15 @@ class NewEntryActivity : AppCompatActivity() {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
         val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_journal_image")
 
+        this.entryImage = "${System.currentTimeMillis()}_journal_image"
+
         imageRef.putFile(imageUri)
             .addOnSuccessListener { taskSnapshot ->
                 // Image uploaded successfully
                 // Get the download URL and store it in the database
                 imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                     // Store the downloadUri in the database along with other journal entry details
+                    // Give the image uri to entry image so we can pass it to the db
                 }
             }
             .addOnFailureListener { exception ->

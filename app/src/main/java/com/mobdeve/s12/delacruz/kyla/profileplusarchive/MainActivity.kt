@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -19,19 +20,21 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.mobdeve.s12.delacruz.kyla.profileplusarchive.databinding.ActivityArchivesBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Random
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity(){
-    private val entryList = ArrayList<EntryModel>()
+    private var entryList = ArrayList<EntryModel>()
     private lateinit var emotionList: ArrayList<EmotionModel>
     private lateinit var myAdapter: MyAdapter
     private lateinit var viewBinding: ActivityArchivesBinding
@@ -61,7 +64,9 @@ class MainActivity : AppCompatActivity(){
     private val FIELD_ENT_BODY = "body"
     private val FIELD_ENT_IMG = "image"
 
+    // double check
     var current_user = ""
+    private var current_user_id = ""
 
     private val viewNoteLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -81,16 +86,34 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         AppPreferences.applyDarkModeLogic(this, R.layout.home_screen, R.layout.dark_home_screen)
 
+
         // After initializing views and Firebase Authentication
         appTitleTextView = findViewById(R.id.appTitle)
         auth = FirebaseAuth.getInstance()
 
+
+        // Check if the user is signed in
+        val currentUser: FirebaseUser? = auth.currentUser
+        // Get token for FCM
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token: String ->
+            if (!TextUtils.isEmpty(token)) {
+                Log.d(TAG, "retrieve token successful : $token")
+            } else {
+                Log.w(TAG, "token should not be null...")
+            }
+        }.addOnFailureListener { e: Exception? -> }.addOnCanceledListener {}
+            .addOnCompleteListener { task: Task<String> ->
+                Log.v(
+                    TAG,
+                    "This is the token : " + task.result
+                )
+            }
         // Check if the user is signed in
         val currentUser: FirebaseUser? = auth.currentUser
 
-        // TODO: what if new user?
         if (currentUser != null) {
             // User is signed in, update the welcome message
+            current_user_id = currentUser.uid
             val displayName = currentUser.displayName
             val welcomeMessage = "Welcome back, $displayName!"
             appTitleTextView.text = welcomeMessage
@@ -106,6 +129,7 @@ class MainActivity : AppCompatActivity(){
             // User is not signed in, show a default message or handle accordingly
             appTitleTextView.text = "Daily Lines"
         }
+
         // For quotes API
         quoteTextView = findViewById(R.id.quote)
         authorTextView = findViewById(R.id.author)
@@ -121,7 +145,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Monday
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[0]) { moodMon ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[0]) { moodMon ->
             val monIv: ImageView = findViewById(R.id.monMood)
             val monTv: TextView = findViewById(R.id.monDay)
 
@@ -138,7 +162,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Tues
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[1]) { moodTues ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[1]) { moodTues ->
             val tuesIv: ImageView = findViewById(R.id.tuesMood)
             val tuesTv: TextView = findViewById(R.id.tuesDay)
 
@@ -155,7 +179,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Wednesday
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[2]) { moodWed ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[2]) { moodWed ->
             val wedIv: ImageView = findViewById(R.id.wedMood)
             val wedTv: TextView = findViewById(R.id.wedDay)
 
@@ -172,7 +196,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Thursday
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[3]) { moodThu ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[3]) { moodThu ->
             val thuIv: ImageView = findViewById(R.id.thuMood)
             val thuTv: TextView = findViewById(R.id.thuDay)
 
@@ -189,7 +213,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Friday
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[4]) { moodFri ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[4]) { moodFri ->
             val friIv: ImageView = findViewById(R.id.friMood)
             val friTv: TextView = findViewById(R.id.friDay)
 
@@ -206,7 +230,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Saturday
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[5]) { moodSat ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[5]) { moodSat ->
             val satIv: ImageView = findViewById(R.id.satMood)
             val satTv: TextView = findViewById(R.id.satDay)
 
@@ -223,7 +247,7 @@ class MainActivity : AppCompatActivity(){
         }
 
         // Sunday
-        getEmotionOfCurrentUserAndDate(current_user, datesOfWeek[6]) { moodSun ->
+        getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[6]) { moodSun ->
             val sunIv: ImageView = findViewById(R.id.sunMood)
             val sunTv: TextView = findViewById(R.id.sunDay)
 
@@ -257,14 +281,12 @@ class MainActivity : AppCompatActivity(){
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 view.setBackgroundResource(R.drawable.glow_background)
-                Toast.makeText(this, "Selected mood: $mood", Toast.LENGTH_SHORT).show()
-
-                getEmotionOfCurrentUserAndDate(current_user, currentDate) { item ->
+                getEmotionOfCurrentUserAndDate(current_user_id, currentDate) { item ->
                     if (item != null) {
-                        updateEmotionInDB(current_user, currentDate, mood)
+                        updateEmotionInDB(current_user_id, currentDate, mood)
                     }
                     else {
-                        val newMood = EmotionModel(mood, currentDate, current_user)
+                        val newMood = EmotionModel(mood, currentDate, current_user_id)
                         addEmotionToDB(newMood)
                     }
                 }
@@ -274,14 +296,13 @@ class MainActivity : AppCompatActivity(){
                 Toast.makeText(this, "Deselected mood: $mood", Toast.LENGTH_SHORT).show()
 
                 // remove from the database
-                getEmotionOfCurrentUserAndDate(current_user, currentDate) { item ->
+                getEmotionOfCurrentUserAndDate(current_user_id, currentDate) { item ->
                     if (item != null) {
-                        removeEmotionFromDB(current_user, currentDate)
+                        removeEmotionFromDB(current_user_id, currentDate)
                     }
                 }
             }
         }
-
 
         val worstMoodButton: ImageButton = findViewById(R.id.worstMood)
         worstMoodButton.setOnClickListener { onMoodButtonClick(it, "worst") }
@@ -317,8 +338,6 @@ class MainActivity : AppCompatActivity(){
                 }
                 R.id.nav_archive -> {
                     // Handle the home screen behavior
-                    // Get all entries of current user and adds them to this.entryList the call setUpArchives
-                    getAllEntriesOfCurrentUser(current_user)
                     setupArchives()
                 }
             }
@@ -326,6 +345,7 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    // Gets emotion under the users name and on a specific date from DB
     private fun getEmotionOfCurrentUserAndDate(currentUser: String, date: String, onEmotionLoaded: (EmotionModel?) -> Unit) {
         db.collection(COLLECTION_EMOTIONS)
             .whereEqualTo(FIELD_USER_ID, currentUser)
@@ -342,10 +362,36 @@ class MainActivity : AppCompatActivity(){
                 onEmotionLoaded(emotionModel)
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
-                onEmotionLoaded(null)
+                Log.d(TAG, "Error getting documents: $exception")
             }
     }
+
+    // Gets entries under the users name from DB
+    private fun getAllEntriesOfCurrentUser(currentUser : String, entryList: ArrayList<EntryModel> = this.entryList){
+        db.collection(COLLECTION_ENTRIES)
+            .whereEqualTo(FIELD_USER_ID, currentUser)
+            .get()
+            .addOnSuccessListener { documents ->
+                for(document in documents){
+                    var entryTitle = document.get(FIELD_ENT_TITLE).toString()
+                    var entryBody = document.get(FIELD_ENT_BODY).toString()
+                    var entryDate = document.get(FIELD_DATE).toString()
+                    var entryImage = document.get(FIELD_ENT_IMG).toString()
+                    entryList.add(
+                        EntryModel(
+                            entryTitle,
+                            entryBody,
+                            entryDate,
+                            entryImage
+                        )
+                    )
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "Error getting documents: $exception")
+            }
+    }
+
 
     // Gets user details from DB
     private fun getUser(email: String, onUserLoaded: (UserModel?) -> Unit) {
@@ -368,6 +414,42 @@ class MainActivity : AppCompatActivity(){
                 onUserLoaded(null)
             }
     }
+
+    private fun setupArchives() {
+        // Check if the entry list is empty
+        if(entryList.isEmpty()){
+            Toast.makeText(this, "Click any date to view entries", Toast.LENGTH_LONG).show()
+        }
+        // Inflate the Archives layout
+        this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
+        setContentView(this.viewBinding.root)
+
+        // Get all entries of current user and adds them to this.entryList
+        getAllEntriesOfCurrentUser(current_user_id)
+        recyclerView = viewBinding.recyclerView
+        calendarView = viewBinding.calendarView
+
+        // Upon change of date in archive page
+        calendarView.setOnDateChangeListener { _, i, i1, i2 ->
+            var year = i.toString()
+            var month = (i1 + 1).toString()
+            var day = i2.toString()
+            var newSelectedDate = "$year-$month-$day"
+            val currentEntries = this.entryList.filter { it.dateString == newSelectedDate }
+            myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
+            recyclerView.adapter = myAdapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
+        }
+        val exitButton = findViewById<ImageView>(R.id.cancelButton)
+        exitButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+//        Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+//                onEmotionLoaded(null)
+//            }
 
     // Add new mood to the DB
     private fun addEmotionToDB(emotionModel: EmotionModel) {
@@ -392,23 +474,23 @@ class MainActivity : AppCompatActivity(){
             .whereEqualTo(FIELD_DATE, date)
 
         query.get()
-        .addOnSuccessListener { documents ->
-            if (!documents.isEmpty) {
-                val document = documents.first()
-                document.reference.update(FIELD_EMO_TRACKED, newMood)
-                    .addOnSuccessListener {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!")
-                    }
-                    .addOnFailureListener { error ->
-                        Log.e(TAG, "Error updating document", error)
-                    }
-            } else {
-                Log.e(TAG, "No document found for user $currentUser on date $date")
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.first()
+                    document.reference.update(FIELD_EMO_TRACKED, newMood)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener { error ->
+                            Log.e(TAG, "Error updating document", error)
+                        }
+                } else {
+                    Log.e(TAG, "No document found for user $currentUser on date $date")
+                }
             }
-        }
-        .addOnFailureListener { error ->
-            Log.e(TAG, "Error getting documents", error)
-        }
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Error getting documents", error)
+            }
     }
 
     // Remove mood from DB
@@ -420,23 +502,23 @@ class MainActivity : AppCompatActivity(){
             .whereEqualTo(FIELD_DATE, date)
 
         query.get()
-        .addOnSuccessListener { documents ->
-            if (!documents.isEmpty) {
-                val document = documents.first()
-                document.reference.delete()
-                    .addOnSuccessListener {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!")
-                    }
-                    .addOnFailureListener { error ->
-                        Log.e(TAG, "Error deleting document", error)
-                    }
-            } else {
-                Log.e(TAG, "No document found for user $currentUser on date $date")
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val document = documents.first()
+                    document.reference.delete()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        }
+                        .addOnFailureListener { error ->
+                            Log.e(TAG, "Error deleting document", error)
+                        }
+                } else {
+                    Log.e(TAG, "No document found for user $currentUser on date $date")
+                }
             }
-        }
-        .addOnFailureListener { error ->
-            Log.e(TAG, "Error getting documents", error)
-        }
+            .addOnFailureListener { error ->
+                Log.e(TAG, "Error getting documents", error)
+            }
     }
 
     // Gets the right image src based on the mood
@@ -448,76 +530,6 @@ class MainActivity : AppCompatActivity(){
             "bad" -> R.drawable.bad_mood_icon
             "worst" -> R.drawable.worst_mood_icon
             else -> 0
-        }
-    }
-
-    // Gets entries under the users name from DB
-    private fun getAllEntriesOfCurrentUser(currentUser : String, entryList: ArrayList<EntryModel> = this.entryList){
-        class DBThread() : Runnable {
-            override fun run() {
-                db.collection(COLLECTION_ENTRIES)
-                    .whereEqualTo(FIELD_USER_ID, currentUser)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        for(document in documents){
-                            var entryTitle = document.get(FIELD_ENT_TITLE).toString()
-                            var entryBody = document.get(FIELD_ENT_BODY).toString()
-                            var entryDate = document.get(FIELD_DATE).toString()
-                            var entryImage = document.get(FIELD_ENT_IMG).toString()
-                            entryList.add(
-                                EntryModel(
-                                    entryTitle,
-                                    entryBody,
-                                    entryDate,
-                                    entryImage
-                                )
-                            )
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d(TAG, "Error getting documents: $exception")
-                    }
-            }
-        }
-        val runnable = DBThread()
-        Thread(runnable).start()
-    }
-
-
-
-    private fun setupArchives(/*documents: QuerySnapshot*/) {
-        // Inflate the Archives layout
-        this.viewBinding = ActivityArchivesBinding.inflate(layoutInflater)
-        setContentView(this.viewBinding.root)
-
-
-        
-        // Get all entries of current user and adds them to this.entryList
-        getAllEntriesOfCurrentUser(current_user)
-        recyclerView = viewBinding.recyclerView
-        calendarView = viewBinding.calendarView
-
-        // On first open of archives page -- this section doesn't work for some reason
-        val selectedDate = LocalDate.now().toString() // returns "year-month-day"
-        val currentEntries = this.entryList.filter { it.dateString == selectedDate }
-        myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
-        recyclerView.adapter = myAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        // Upon change of date in archive page
-        calendarView.setOnDateChangeListener { _, i, i1, i2 ->
-            var year = i.toString()
-            var month = (i1 + 1).toString()
-            var day = i2.toString()
-            var newSelectedDate = "$year-$month-$day"
-            val currentEntries = this.entryList.filter { it.dateString == newSelectedDate }
-            myAdapter = MyAdapter(currentEntries, viewNoteLauncher)
-            recyclerView.adapter = myAdapter
-            recyclerView.layoutManager = LinearLayoutManager(this)
-        }
-        val exitButton = findViewById<ImageView>(R.id.cancelButton)
-        exitButton.setOnClickListener {            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
         }
     }
 
