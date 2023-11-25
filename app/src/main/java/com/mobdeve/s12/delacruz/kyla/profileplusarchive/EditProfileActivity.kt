@@ -47,8 +47,6 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Receiving extras sent from MainActivity/EditProfileActivity
-        val userID = intent.getStringExtra("userID")
 
         // App Preferences for Dark/Normal Mode
         appPreferences = AppPreferences(this)
@@ -68,7 +66,6 @@ class EditProfileActivity : AppCompatActivity() {
         // Fetch the current user from Firebase Authentication
         val currentUser: FirebaseUser? = mAuth.currentUser
 
-        // TODO : getUser(currentUser.email.toString()
         if (currentUser != null) {
             getUser(currentUser.email.toString()) { item ->
                 if(item != null) {
@@ -116,7 +113,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-
+    // Gets user information from the DB
     private fun getUser(email: String, onUserLoaded: (UserModel?) -> Unit) {
         db.collection(COLLECTION_USERS)
             .whereEqualTo(EMAIL_ADDR, email)
@@ -133,7 +130,7 @@ class EditProfileActivity : AppCompatActivity() {
                 onUserLoaded(userModel)
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+                Log.e("GetUserDB", "Error getting document", error)
                 onUserLoaded(null)
             }
     }
@@ -151,6 +148,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Updates the user's Profile Name in the DB
     private fun updateUserName(userID: String, newName: String, callback: () -> Unit) {
         Log.d(ContentValues.TAG, "AM I IN HERE $newName")
         val db = FirebaseFirestore.getInstance()
@@ -167,21 +165,22 @@ class EditProfileActivity : AppCompatActivity() {
                 document.reference.update(PROFILE_NAME, newName)
                     .addOnSuccessListener {
                         profileName = newName
-                        Log.d(ContentValues.TAG, "Profile name successfully updated!")
+                        Log.d("UpdateName", "Profile name successfully updated!")
                         callback.invoke()
                     }
                     .addOnFailureListener { error ->
-                        Log.e(ContentValues.TAG, "Error updating document", error)
+                        Log.e("UpdateName", "Error updating document", error)
                     }
             } else {
-                Log.e(ContentValues.TAG, "No document found")
+                Log.e("UpdateName", "No document found")
             }
         }
         .addOnFailureListener { error ->
-            Log.e(ContentValues.TAG, "Error getting documents", error)
+            Log.e("UpdateName", "Error getting documents", error)
         }
     }
 
+    // Uploads selected image to firebase then adds its URL to the DB
     private fun uploadImageToFirebase(userID: String, imageUri: Uri, callback: () -> Unit) {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
         val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_profile_image")
@@ -201,23 +200,23 @@ class EditProfileActivity : AppCompatActivity() {
                             val document = documents.first()
                             document.reference.update(PHOTO_URL, downloadUri.toString())
                                 .addOnSuccessListener {
-                                    Log.d(ContentValues.TAG, "Photo Url successfully updated!")
+                                    Log.d("UploadImage", "Photo Url successfully updated!")
                                     callback.invoke()
                                 }
                                 .addOnFailureListener { error ->
-                                    Log.e(ContentValues.TAG, "Error updating document", error)
+                                    Log.e("UploadImage", "Error updating document", error)
                                 }
                         } else {
-                            Log.e(ContentValues.TAG, "No document found")
+                            Log.e("UploadImage", "No document found")
                         }
                     }
                     .addOnFailureListener { error ->
-                        Log.e(ContentValues.TAG, "Error getting documents", error)
+                        Log.e("UploadImage", "Error getting documents", error)
                     }
                 }
             }
             .addOnFailureListener { error ->
-                Log.e(ContentValues.TAG, "Error uploading photo to firebase", error)
+                Log.e("UploadImage", "Error uploading photo to firebase", error)
             }
     }
 }

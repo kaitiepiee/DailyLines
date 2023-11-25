@@ -159,7 +159,8 @@
                     android:id="@+id/monMood"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/neutral_mood_icon" />
+                    android:src="@drawable/neutral_mood_icon"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/monDay"
@@ -167,11 +168,10 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="1"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:textSize="18sp" />
             </FrameLayout>
 
             <FrameLayout
@@ -182,7 +182,8 @@
                     android:id="@+id/tuesMood"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/best_mood_icon" />
+                    android:src="@drawable/best_mood_icon"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tuesDay"
@@ -190,11 +191,10 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="1"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:textSize="18sp" />
             </FrameLayout>
 
             <FrameLayout
@@ -214,7 +214,7 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="20"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -237,7 +237,7 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="21"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -260,7 +260,7 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="22"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -283,7 +283,7 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="23"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
@@ -306,7 +306,7 @@
                     android:layout_height="match_parent"
 
                     android:fontFamily="@font/inter"
-                    android:text="24"
+                    android:text="00"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp" />

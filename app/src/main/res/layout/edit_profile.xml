@@ -38,7 +38,7 @@
 
             android:background="@null"
             android:fontFamily="@font/inter"
-            android:hint="Francesca Antonio"
+            android:hint="Display Name"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />

@@ -59,8 +59,6 @@ class ProfileActivity : AppCompatActivity() {
             setContentView(R.layout.activity_profile_screen)
         }
 
-        Log.d("ProfileActivity", "Im back here?")
-
         mAuth = FirebaseAuth.getInstance()
         // Fetch the current user from Firebase Authentication
         val currentUser: FirebaseUser? = mAuth.currentUser
@@ -82,7 +80,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
 
-        // Show total number of entries
+        // Shows the  total number of entries
         val entryListSize = intent.getIntExtra("entryListSize", 0)
         val journalEntriesTextView = findViewById<TextView>(R.id.numJournalEntriesTv)
         journalEntriesTextView.text = "$entryListSize"
@@ -118,6 +116,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Displays the settings menu
     private fun showSettings(view: View) {
         val popup = PopupMenu(this, view)
         popup.menuInflater.inflate(R.menu.settings_menu, popup.menu)
@@ -147,7 +146,7 @@ class ProfileActivity : AppCompatActivity() {
         popup.show()
     }
 
-    // Display user information in the UI
+    // Set ups the UI according to the user details present in the DB
     private fun updateUI(email : String, profileName : String, photoUrl : String) {
         // Update profile picture
         val profilePictureImageView: ShapeableImageView = findViewById(R.id.profilePivIv)
@@ -170,6 +169,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Gets user information from the DB
     private fun getUser(email: String, onUserLoaded: (UserModel?) -> Unit) {
         db.collection(COLLECTION_USERS)
             .whereEqualTo(EMAIL_ADDR, email)
@@ -185,12 +185,13 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 onUserLoaded(userModel)
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+            .addOnFailureListener { error ->
+                Log.e("GetUserDB", "Error getting document", error)
                 onUserLoaded(null)
             }
     }
 
+    // Signs out the current user
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         val mGoogleSignInClient = GoogleSignInManager.getGoogleSignInClient(this)

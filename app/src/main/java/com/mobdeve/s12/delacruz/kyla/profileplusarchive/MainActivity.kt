@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
-        // Tues
+        // Tuesday
         getEmotionOfCurrentUserAndDate(current_user_id, datesOfWeek[1]) { moodTues ->
             val tuesIv: ImageView = findViewById(R.id.tuesMood)
             val tuesTv: TextView = findViewById(R.id.tuesDay)
@@ -288,9 +288,11 @@ class MainActivity : AppCompatActivity(){
                 view.setBackgroundResource(R.drawable.glow_background)
                 getEmotionOfCurrentUserAndDate(current_user_id, currentDate) { item ->
                     if (item != null) {
+                        // Updating DB when a mood-of-the-day entry already exists
                         updateEmotionInDB(current_user_id, currentDate, mood)
                     }
                     else {
+                        // Adds a mood-of-the-day entry when it does not exist in the DB
                         val newMood = EmotionModel(mood, currentDate, current_user_id)
                         addEmotionToDB(newMood)
                     }
@@ -300,7 +302,7 @@ class MainActivity : AppCompatActivity(){
                 view.setBackgroundResource(android.R.color.transparent)
                 Toast.makeText(this, "Deselected mood: $mood", Toast.LENGTH_SHORT).show()
 
-                // remove from the database
+                // Removing the selected mood from the database when deselected
                 getEmotionOfCurrentUserAndDate(current_user_id, currentDate) { item ->
                     if (item != null) {
                         removeEmotionFromDB(current_user_id, currentDate)
@@ -415,7 +417,7 @@ class MainActivity : AppCompatActivity(){
                 onUserLoaded(userModel)
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+                Log.e("GetUserDB", "Error getting documents: $error", error)
                 onUserLoaded(null)
             }
     }
@@ -452,10 +454,6 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-//        Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
-//                onEmotionLoaded(null)
-//            }
-
     // Add new mood to the DB
     private fun addEmotionToDB(emotionModel: EmotionModel) {
         val db = FirebaseFirestore.getInstance()
@@ -463,10 +461,10 @@ class MainActivity : AppCompatActivity(){
         db.collection(COLLECTION_EMOTIONS)
             .add(emotionModel)
             .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                Log.d("AddMood", "Successfully added ${emotionModel.emotion_tracked} mood entry in the DB.")
             }
             .addOnFailureListener { error ->
-                Log.e(TAG, "Error adding document", error)
+                Log.e("AddMood", "Error adding document", error)
             }
     }
 
@@ -484,17 +482,17 @@ class MainActivity : AppCompatActivity(){
                     val document = documents.first()
                     document.reference.update(FIELD_EMO_TRACKED, newMood)
                         .addOnSuccessListener {
-                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                            Log.d("UpdateMood", "Successfully updated mood entry!")
                         }
                         .addOnFailureListener { error ->
-                            Log.e(TAG, "Error updating document", error)
+                            Log.e("UpdateMood", "Error updating document", error)
                         }
                 } else {
-                    Log.e(TAG, "No document found for user $currentUser on date $date")
+                    Log.e("UpdateMood", "No document found for user $currentUser on date $date")
                 }
             }
             .addOnFailureListener { error ->
-                Log.e(TAG, "Error getting documents", error)
+                Log.e("UpdateMood", "Error getting documents", error)
             }
     }
 
@@ -512,17 +510,17 @@ class MainActivity : AppCompatActivity(){
                     val document = documents.first()
                     document.reference.delete()
                         .addOnSuccessListener {
-                            Log.d(TAG, "DocumentSnapshot successfully updated!")
+                            Log.d("RemoveMood", "Successfully deleted mood entry!")
                         }
                         .addOnFailureListener { error ->
-                            Log.e(TAG, "Error deleting document", error)
+                            Log.e("RemoveMood", "Error deleting document", error)
                         }
                 } else {
-                    Log.e(TAG, "No document found for user $currentUser on date $date")
+                    Log.e("RemoveMood", "No document found for user $currentUser on date $date")
                 }
             }
             .addOnFailureListener { error ->
-                Log.e(TAG, "Error getting documents", error)
+                Log.e("RemoveMood", "Error getting documents", error)
             }
     }
 
