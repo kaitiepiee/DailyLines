@@ -32,7 +32,13 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Random
 
-
+/**
+ * This class handles the home page's functionality.
+ * It uses an API for the randomly displayed quotes.
+ * It also shows a mini calendar which tracks their mood from the 'Today I'm Feeling...' chart.
+ * The user may also click on the 'Start Writing' button to write a journal entry.
+ * The page features a bottom navigation bar to enter Home, Archive, and Profile page.
+ */
 class MainActivity : AppCompatActivity(){
     private var entryList = ArrayList<EntryModel>()
     private lateinit var emotionList: ArrayList<EmotionModel>
@@ -108,8 +114,7 @@ class MainActivity : AppCompatActivity(){
                     "This is the token : " + task.result
                 )
             }
-        // Check if the user is signed in
-        val currentUser: FirebaseUser? = auth.currentUser
+
 
         if (currentUser != null) {
             // User is signed in, update the welcome message

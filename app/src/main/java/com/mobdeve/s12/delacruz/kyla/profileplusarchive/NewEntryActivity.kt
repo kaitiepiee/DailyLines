@@ -24,6 +24,11 @@ import java.util.Date
 import java.util.Locale
 
 
+/**
+ * This class handles the new journal activity of the application.
+ * It takes a series of variables that indicated when, what, and how the journal was created.
+ * The data is stored in the project's Firestore dabatase.
+ */
 class NewEntryActivity : AppCompatActivity() {
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var auth: FirebaseAuth

@@ -20,6 +20,11 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
+/**
+ * This class handles the view journal entry under the Archive screen.
+ * By clicking on any date, the user is presented with the journals logged
+ * in their account. They may click the entry to review previous journals.
+ */
 class ViewNoteActivity : AppCompatActivity() {
     companion object {
         const val titleKey : String = "TITLE_KEY"

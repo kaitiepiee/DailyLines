@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/settings_mode"
-        android:title="Dark Mode"
+        android:title="@string/turn_on_dark_mode"
         android:fontFamily="@font/inter" />
     <item
         android:id="@+id/settings_edit"

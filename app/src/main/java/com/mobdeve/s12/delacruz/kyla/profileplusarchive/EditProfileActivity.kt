@@ -19,6 +19,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+/**
+ * This class allows the user to update their account's profile.
+ * They may edit their profile picture & profile name.
+ * The data is stored and updated in the project's Firestore dabatase.
+ *
+ */
 class EditProfileActivity : AppCompatActivity() {
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 

@@ -21,6 +21,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
+/**
+ * This class shows the login feature of the application
+ * using Google Firebase's Authentication & Firestore Database
+ */
 class LoginActivity : AppCompatActivity() {
 
     private companion object {

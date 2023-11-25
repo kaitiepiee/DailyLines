@@ -4,7 +4,10 @@ import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-
+/**
+ * This class manages the app's feature on signing in with a Google account.
+ *
+ */
 object GoogleSignInManager {
     private var mGoogleSignInClient: GoogleSignInClient? = null
 

@@ -9,6 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
+/**
+ * This class sets the request from the quotes API that is retrieved from RetroFit
+ */
 class RequestManager (mContext: Context) {
     private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://type.fit/")
