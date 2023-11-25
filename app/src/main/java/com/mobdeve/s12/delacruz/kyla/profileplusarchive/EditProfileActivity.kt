@@ -92,8 +92,9 @@ class EditProfileActivity : AppCompatActivity() {
                         }
 
                         if(selectedImageUri != null) {
-                            uploadImageToFirebase(item.user_id, selectedImageUri!!)
-                            picIsDone = true
+                            uploadImageToFirebase(item.user_id, selectedImageUri!!) {
+                                picIsDone = true
+                            }
                         } else {
                             picIsDone = true
                         }
@@ -175,7 +176,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImageToFirebase(userID: String, imageUri: Uri) {
+    private fun uploadImageToFirebase(userID: String, imageUri: Uri, callback: () -> Unit) {
         val storageRef: StorageReference = FirebaseStorage.getInstance().reference
         val imageRef: StorageReference = storageRef.child("images/${System.currentTimeMillis()}_profile_image")
         val db = FirebaseFirestore.getInstance()
@@ -195,6 +196,7 @@ class EditProfileActivity : AppCompatActivity() {
                             document.reference.update(PHOTO_URL, downloadUri.toString())
                                 .addOnSuccessListener {
                                     Log.d(ContentValues.TAG, "Photo Url successfully updated!")
+                                    callback.invoke()
                                 }
                                 .addOnFailureListener { error ->
                                     Log.e(ContentValues.TAG, "Error updating document", error)
