@@ -49,9 +49,14 @@ class MainActivity : AppCompatActivity(){
     private var db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
     // Creates constants for us to call so we don't have to type everything
+    private val COLLECTION_USERS = "Users"
+    private val FIELD_USER_ID = "user_id"
+    private val PHOTO_URL = "photoUrl"
+    private val EMAIL_ADDR = "email"
+    private val PROFILE_NAME = "profileName"
+
     private val COLLECTION_EMOTIONS = "Emotions"
     private val COLLECTION_ENTRIES = "Entries"
-    private val FIELD_USER_ID = "user_id"
     private val FIELD_DATE = "datestring"
 
     private val FIELD_EMO_TRACKED = "emotion_tracked"
@@ -59,6 +64,8 @@ class MainActivity : AppCompatActivity(){
     private val FIELD_ENT_BODY = "body"
     private val FIELD_ENT_IMG = "image"
 
+    // double check
+    var current_user = ""
     private var current_user_id = ""
 
     private val viewNoteLauncher = registerForActivityResult(
@@ -84,6 +91,9 @@ class MainActivity : AppCompatActivity(){
         appTitleTextView = findViewById(R.id.appTitle)
         auth = FirebaseAuth.getInstance()
 
+
+        // Check if the user is signed in
+        val currentUser: FirebaseUser? = auth.currentUser
         // Get token for FCM
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token: String ->
             if (!TextUtils.isEmpty(token)) {
@@ -100,12 +110,21 @@ class MainActivity : AppCompatActivity(){
             }
         // Check if the user is signed in
         val currentUser: FirebaseUser? = auth.currentUser
+
         if (currentUser != null) {
             // User is signed in, update the welcome message
             current_user_id = currentUser.uid
             val displayName = currentUser.displayName
             val welcomeMessage = "Welcome back, $displayName!"
             appTitleTextView.text = welcomeMessage
+
+            // Getting user id
+            getUser(currentUser.email.toString()) { item ->
+                if(item != null) {
+                    current_user = item.user_id
+                }
+            }
+
         } else {
             // User is not signed in, show a default message or handle accordingly
             appTitleTextView.text = "Daily Lines"
@@ -325,6 +344,7 @@ class MainActivity : AppCompatActivity(){
             true
         }
     }
+
     // Gets emotion under the users name and on a specific date from DB
     private fun getEmotionOfCurrentUserAndDate(currentUser: String, date: String, onEmotionLoaded: (EmotionModel?) -> Unit) {
         db.collection(COLLECTION_EMOTIONS)
@@ -369,6 +389,29 @@ class MainActivity : AppCompatActivity(){
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "Error getting documents: $exception")
+            }
+    }
+
+
+    // Gets user details from DB
+    private fun getUser(email: String, onUserLoaded: (UserModel?) -> Unit) {
+        db.collection(COLLECTION_USERS)
+            .whereEqualTo(EMAIL_ADDR, email)
+            .get()
+            .addOnSuccessListener { documents ->
+                val userModel: UserModel? = if (documents.isEmpty) null else {
+                    val document = documents.first()
+                    val emailAddr = document.get(EMAIL_ADDR).toString()
+                    val profileName = document.get(PROFILE_NAME).toString()
+                    val photoUrl = document.get(PHOTO_URL).toString()
+                    val userID = document.get(FIELD_USER_ID).toString()
+                    UserModel(emailAddr, profileName, photoUrl, userID)
+                }
+                onUserLoaded(userModel)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
+                onUserLoaded(null)
             }
     }
 
