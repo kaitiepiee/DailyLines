@@ -71,24 +71,27 @@ class EditProfileActivity : AppCompatActivity() {
 
                 // Save changes
                 saveButton.setOnClickListener {
-                    var nameUpdateDone = false
-                    var picUpdateDone = false
                     val newName = nameETV.text.toString()
+                    var nameIsDone = false
+                    var picIsDone = false
 
                     if(newName.isNotBlank()) {
                         updateUserName(item.user_id, newName) {
-//                            if (selectedImageUri!! != null) {
-//                                uploadImageToFirebase(item.user_id, selectedImageUri!!)
-//                            }
-
-                            val intent = Intent(this, ProfileActivity::class.java)
-                            startActivity(intent)
+                            nameIsDone = true
                         }
                     } else {
-                        val intent = Intent(this, ProfileActivity::class.java)
-                        startActivity(intent)
+                        nameIsDone = true
                     }
 
+                    if(selectedImageUri != null) {
+                        uploadImageToFirebase(item.user_id, selectedImageUri!!)
+                        picIsDone = true
+                    } else {
+                        picIsDone = true
+                    }
+
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
@@ -121,11 +124,11 @@ class EditProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            val imageUri: Uri = data.data!!
+            this.selectedImageUri = data.data!!
 
             // Load the image into the profilePivIv
             val profilePivIv = findViewById<ShapeableImageView>(R.id.profilePivIv)
-            profilePivIv.setImageURI(imageUri)
+            profilePivIv.setImageURI(selectedImageUri)
         }
     }
 
